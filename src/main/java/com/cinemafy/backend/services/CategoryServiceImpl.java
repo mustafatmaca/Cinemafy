@@ -3,8 +3,9 @@ package com.cinemafy.backend.services;
 import com.cinemafy.backend.models.Category;
 import com.cinemafy.backend.repositories.CategoryRepository;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class CategoryServiceImpl implements CategoryService{
 
@@ -14,10 +15,25 @@ public class CategoryServiceImpl implements CategoryService{
         this.categoryRepository = categoryRepository;
     }
 
+
     @Override
-    public Set<Category> getCategories() {
-        Set<Category> categorySet = new HashSet<>();
-        categoryRepository.findAll().iterator().forEachRemaining(categorySet::add);
-        return categorySet;
+    public List<Category> findAll() {
+        return StreamSupport.stream(categoryRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long count() {
+        return categoryRepository.count();
+    }
+
+    @Override
+    public void delete(Category category) {
+        categoryRepository.delete(category);
+    }
+
+    @Override
+    public void save(Category category) {
+        categoryRepository.save(category);
     }
 }

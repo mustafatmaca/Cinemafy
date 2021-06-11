@@ -3,8 +3,9 @@ package com.cinemafy.backend.services;
 import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.repositories.SalonRepository;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class SalonServiceImpl implements SalonService{
 
@@ -14,10 +15,25 @@ public class SalonServiceImpl implements SalonService{
         this.salonRepository = salonRepository;
     }
 
+
     @Override
-    public Set<Salon> getSalons() {
-        Set<Salon> salonSet = new HashSet<>();
-        salonRepository.findAll().iterator().forEachRemaining(salonSet::add);
-        return salonSet;
+    public List<Salon> findAll() {
+        return StreamSupport.stream(salonRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long count() {
+        return salonRepository.count();
+    }
+
+    @Override
+    public void delete(Salon salon) {
+        salonRepository.delete(salon);
+    }
+
+    @Override
+    public void save(Salon salon) {
+        salonRepository.save(salon);
     }
 }

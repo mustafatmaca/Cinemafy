@@ -2,8 +2,14 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Category;
 
-import java.util.Set;
+import java.util.List;
 
 public interface CategoryService {
-    Set<Category> getCategories();
+    List<Category> findAll();
+
+    Long count();
+
+    void delete(Category category);
+
+    void save(Category category);
 }

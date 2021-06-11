@@ -2,8 +2,14 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Film;
 
-import java.util.Set;
+import java.util.List;
 
 public interface FilmService {
-    Set<Film> getFilms();
+    List<Film> findAll();
+
+    Long count();
+
+    void delete(Film film);
+
+    void save(Film film);
 }

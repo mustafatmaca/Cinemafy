@@ -2,11 +2,13 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Category;
 import com.cinemafy.backend.repositories.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
@@ -36,4 +38,5 @@ public class CategoryServiceImpl implements CategoryService{
     public void save(Category category) {
         categoryRepository.save(category);
     }
+
 }

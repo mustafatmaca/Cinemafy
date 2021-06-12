@@ -2,11 +2,13 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Film;
 import com.cinemafy.backend.repositories.FilmRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class FilmServiceImpl implements FilmService{
 
     private final FilmRepository filmRepository;

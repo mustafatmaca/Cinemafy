@@ -18,7 +18,7 @@ public class Session {
     private Long id;
     private String time;
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
     private Set<User> users = new HashSet<>();
 
     @ManyToOne

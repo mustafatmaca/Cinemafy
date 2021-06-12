@@ -2,11 +2,13 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Session;
 import com.cinemafy.backend.repositories.SessionRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class SessionServiceImpl implements SessionService{
 
     private final SessionRepository sessionRepository;

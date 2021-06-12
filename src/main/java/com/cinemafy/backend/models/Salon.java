@@ -19,10 +19,10 @@ public class Salon {
     private String number;
     private String seatCapacity;
 
-    @OneToMany(mappedBy = "salon")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "salon", cascade = CascadeType.ALL)
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "salon")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "salon", cascade = CascadeType.ALL)
     private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne

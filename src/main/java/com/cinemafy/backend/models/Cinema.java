@@ -19,10 +19,10 @@ public class Cinema{
     private String name;
     private String city;
 
-    @OneToMany(mappedBy = "cinema")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cinema", cascade = CascadeType.ALL)
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "cinema")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cinema", cascade = CascadeType.ALL)
     private Set<Salon> salons = new HashSet<>();
 
 }

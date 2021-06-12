@@ -19,13 +19,13 @@ public class Film {
     private String name;
     private String runtime;
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
     private Set<Salon> salons = new HashSet<>();
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
     private Set<Session> sessions = new HashSet<>();
 
     @ManyToMany

@@ -1,4 +1,7 @@
 package com.cinemafy.ui;
+/**
+ * @author Mustafa Atmaca
+ */
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;

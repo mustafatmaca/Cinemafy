@@ -1,4 +1,7 @@
 package com.cinemafy.backend.models;
+/**
+ * @author Mustafa Atmaca
+ */
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

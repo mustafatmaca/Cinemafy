@@ -5,6 +5,7 @@ package com.cinemafy.ui;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,6 +15,8 @@ import com.vaadin.flow.router.Route;
 public class RegisterView extends VerticalLayout {
 
     public RegisterView() {
+        String src = "https://mpng.subpng.com/20180621/ewt/kisspng-film-cinema-logo-photography-5b2c14e50ae561.8080959915296155890446.jpg";
+        Image img = new Image(src, "Cinemafy");
         H2 title = new H2("Sign Up");
 
         TextField firstNameField = new TextField("First Name");
@@ -29,6 +32,6 @@ public class RegisterView extends VerticalLayout {
         setMaxWidth("380px");
         getStyle().set("margin", "0 auto");
 
-        add(title, firstNameField, lastNameField, emailField, passwordField, button);
+        add(img, title, firstNameField, lastNameField, emailField, passwordField, button);
     }
 }

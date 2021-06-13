@@ -5,6 +5,7 @@ package com.cinemafy.ui;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
@@ -16,6 +17,9 @@ public class LoginView extends VerticalLayout {
 
 
     public LoginView() {
+        String src = "https://mpng.subpng.com/20180621/ewt/kisspng-film-cinema-logo-photography-5b2c14e50ae561.8080959915296155890446.jpg";
+        Image img = new Image(src, "Cinemafy");
+
         LoginForm loginForm = new LoginForm();
         loginForm.setI18n(createI18n());
 
@@ -35,7 +39,7 @@ public class LoginView extends VerticalLayout {
 
         setAlignItems(Alignment.CENTER);
 
-        add(loginForm, button);
+        add(img, loginForm, button);
     }
 
     private LoginI18n createI18n() {

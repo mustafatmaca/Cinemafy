@@ -33,6 +33,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User login(String email, String password) {
+        List<User> result =  userRepository.findByEmailAndPassword(email,password);
+        if (result.size()==0){
+            return new User();
+        }
+
+        return result.get(0);
+    }
+
+    @Override
     public void delete(User user) {
         userRepository.delete(user);
     }

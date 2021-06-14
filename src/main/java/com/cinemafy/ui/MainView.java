@@ -4,6 +4,7 @@ package com.cinemafy.ui;
  */
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -13,12 +14,20 @@ import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 
 
 @PWA(name = "Cinemafy", shortName = "Cinemafy")
 public class MainView extends AppLayout implements AppShellConfigurator {
 
     public MainView() {
+
+        if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId")==null) {
+            if (UI.getCurrent() != null) {
+                UI.getCurrent().getPage().setLocation("/login");
+            }
+        }
+
         String src = "https://mpng.subpng.com/20180621/ewt/kisspng-film-cinema-logo-photography-5b2c14e50ae561.8080959915296155890446.jpg";
         Image img = new Image(src, "Cinemafy");
 

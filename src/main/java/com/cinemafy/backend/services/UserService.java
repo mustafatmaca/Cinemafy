@@ -12,6 +12,8 @@ public interface UserService {
 
     Long count();
 
+    User login(String email, String password);
+
     void delete(User user);
 
     void save(User user);

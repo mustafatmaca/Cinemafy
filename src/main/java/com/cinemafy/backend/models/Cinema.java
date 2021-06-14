@@ -23,9 +23,6 @@ public class Cinema{
     private String city;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "cinema", cascade = CascadeType.ALL)
-    private Set<User> users = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cinema", cascade = CascadeType.ALL)
     private Set<Salon> salons = new HashSet<>();
 
 }

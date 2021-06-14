@@ -15,4 +15,6 @@ public interface FilmService {
     void delete(Film film);
 
     void save(Film film);
+
+    void saveAll(Iterable<Film> films);
 }

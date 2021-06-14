@@ -22,16 +22,4 @@ public class User{
     private String lastName;
     private String email;
     private String password;
-
-    @ManyToOne
-    private Cinema cinema;
-
-    @ManyToOne
-    private Salon salon;
-
-    @ManyToOne
-    private Film film;
-
-    @ManyToOne
-    private Session session;
 }

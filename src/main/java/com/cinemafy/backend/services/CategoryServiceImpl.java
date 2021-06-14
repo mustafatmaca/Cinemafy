@@ -42,4 +42,9 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.save(category);
     }
 
+    @Override
+    public void saveAll(Iterable<Category> categories) {
+        categoryRepository.saveAll(categories);
+    }
+
 }

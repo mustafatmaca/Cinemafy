@@ -5,7 +5,6 @@ package com.cinemafy.backend.services;
 
 import com.cinemafy.backend.models.Cinema;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 public interface CinemaService {
@@ -17,6 +16,5 @@ public interface CinemaService {
 
     void save(Cinema cinema);
 
-    @PostConstruct
-    void populateTestData();
+    void saveAll(Iterable<Cinema> cinemas);
 }

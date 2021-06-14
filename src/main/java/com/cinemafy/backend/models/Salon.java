@@ -23,16 +23,9 @@ public class Salon {
     private String seatCapacity;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "salon", cascade = CascadeType.ALL)
-    private Set<User> users = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "salon", cascade = CascadeType.ALL)
     private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne
     private Cinema cinema;
-
-    @ManyToOne
-    private Film film;
-
 
 }

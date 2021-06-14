@@ -21,16 +21,11 @@ public class Film {
     private Long id;
     private String name;
     private String runtime;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
-    private Set<User> users = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
-    private Set<Salon> salons = new HashSet<>();
+    private String src;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
     private Set<Session> sessions = new HashSet<>();
 
-    @ManyToMany
-    private Set<Category> categories = new HashSet<>();
+    @ManyToOne
+    private Category category;
 }

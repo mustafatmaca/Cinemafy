@@ -21,6 +21,7 @@ import com.vaadin.flow.server.VaadinSession;
 public class MainView extends AppLayout implements AppShellConfigurator {
 
     public MainView() {
+        System.out.println("MainView");
 
         if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId")==null) {
             if (UI.getCurrent() != null) {

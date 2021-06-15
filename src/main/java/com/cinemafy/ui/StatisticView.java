@@ -11,6 +11,8 @@ import com.vaadin.flow.router.Route;
 public class StatisticView extends VerticalLayout {
 
     public StatisticView() {
+        System.out.println("StatisticsView");
+
         Label label = new Label("Statistic View");
 
         setAlignItems(Alignment.CENTER);

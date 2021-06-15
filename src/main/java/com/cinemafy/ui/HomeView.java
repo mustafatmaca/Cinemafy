@@ -3,7 +3,9 @@ package com.cinemafy.ui;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.backend.models.Cinema;
 import com.cinemafy.backend.models.Film;
+import com.cinemafy.backend.services.CinemaService;
 import com.cinemafy.backend.services.FilmService;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
@@ -22,13 +24,21 @@ import java.util.List;
 public class HomeView extends VerticalLayout {
 
     private final FilmService filmService;
+    private final CinemaService cinemaService;
 
-    public HomeView(FilmService filmService) {
+    public HomeView(FilmService filmService, CinemaService cinemaService) {
+        System.out.println("HomeView");
         this.filmService = filmService;
+        this.cinemaService = cinemaService;
+
+        setWidth("%100");
+        setHeight("%100");
+        setPadding(true);
+        setJustifyContentMode(JustifyContentMode.BETWEEN);
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         List<Film> films = filmService.findAll();
-        VerticalLayout verticalLayout = new VerticalLayout();
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        HorizontalLayout horizontalLayout1 = new HorizontalLayout();
 
         for (Film film : films) {
             H3 name = new H3(film.getName());
@@ -39,44 +49,34 @@ public class HomeView extends VerticalLayout {
             Image img = new Image(src, "Dune");
             img.setHeight("384px");
             img.setWidth("256px");
-            horizontalLayout.add(new VerticalLayout(img,name,ctg));
+            horizontalLayout1.add(new VerticalLayout(img,name,ctg));
         }
-        horizontalLayout.setAlignItems(Alignment.CENTER);
+        horizontalLayout1.setAlignItems(Alignment.CENTER);
 
-        setWidth("%100");
-        setHeight("%100");
-        setPadding(true);
-        setJustifyContentMode(JustifyContentMode.BETWEEN);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        List<Cinema> cinemas = cinemaService.findAll();
+        HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+
+        for (Cinema cinema : cinemas) {
+            H3 name = new H3(cinema.getName());
+            name.setHeight("40px");
+            Label city = new Label(cinema.getCity());
+            city.setHeight("20px");
+            horizontalLayout2.add(new VerticalLayout(name,city));
+        }
+        horizontalLayout2.setAlignItems(Alignment.CENTER);
 
         H1 h1 = new H1("Movie In Theaters");
         h1.setHeight("100px");
         H1 h2 = new H1("Theaters");
         h2.setHeight("100px");
 
-        //Label eternals = new Label("Eternals");
-        //eternals.setHeight("40px");
-        //Label dune = new Label("Dune");
-        //dune.setHeight("40px");
-
-        //String src = "https://tr.web.img4.acsta.net/r_1920_1080/pictures/20/04/30/20/27/2963799.jpg";
-        //Image img = new Image(src, "Dune");
-        //img.setHeight("384px");
-        //img.setWidth("256px");
-
-        //String src1 = "https://tr.web.img4.acsta.net/r_1920_1080/pictures/21/05/25/10/14/2918182.jpg";
-        //Image img1 = new Image(src1, "Eternals");
-        //img1.setHeight("384px");
-        //img1.setWidth("256px");
-
         HorizontalLayout title1 = new HorizontalLayout(h1);
         title1.setAlignItems(Alignment.START);
-
 
         HorizontalLayout title2 = new HorizontalLayout(h2);
         title2.setAlignItems(Alignment.START);
 
         setAlignItems(Alignment.START);
-        add(title1, horizontalLayout, title2);
+        add(title1, horizontalLayout1, title2, horizontalLayout2);
     }
 }

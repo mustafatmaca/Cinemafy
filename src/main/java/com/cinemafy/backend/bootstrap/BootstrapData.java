@@ -87,7 +87,7 @@ public class BootstrapData implements CommandLineRunner {
         //CINEMA
         cinemaService.saveAll(
                 Stream.of("Edirne-Erasta AVM", "İstanbul-Forum İstanbul", "Kayseri-Forum Kayseri",
-                        "İzmir-Erasta İzmir AVM")
+                        "İzmir-Erasta İzmir AVM", "İstanbul-Mall of İstanbul", "Edirne-Kipa AVM")
                         .map(name -> {
                             String[] split = name.split("-");
                             Cinema cinema = new Cinema();

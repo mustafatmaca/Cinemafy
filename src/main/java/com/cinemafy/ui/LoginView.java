@@ -21,6 +21,7 @@ public class LoginView extends VerticalLayout {
     private final UserService userService;
 
     public LoginView(UserService userService) {
+        System.out.println("LoginView");
         this.userService = userService;
         H1 header = new H1("Cinemafy");
 

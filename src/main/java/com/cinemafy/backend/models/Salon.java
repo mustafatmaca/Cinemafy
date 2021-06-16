@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -21,9 +19,6 @@ public class Salon {
     private Long id;
     private String number;
     private String seatCapacity;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "salon", cascade = CascadeType.ALL)
-    private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne
     private Cinema cinema;

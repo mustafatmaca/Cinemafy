@@ -24,4 +24,7 @@ public class Session {
 
     @ManyToOne
     private Salon salon;
+
+    @ManyToOne
+    private Cinema cinema;
 }

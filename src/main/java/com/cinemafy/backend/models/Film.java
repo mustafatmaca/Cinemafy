@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -22,9 +20,6 @@ public class Film {
     private String name;
     private String runtime;
     private String src;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
-    private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne
     private Category category;

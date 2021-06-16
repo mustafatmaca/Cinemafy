@@ -81,17 +81,38 @@ public class TicketView extends VerticalLayout {
         }
         cbCinema.setItems(cinemaName);
 
-        List<String> salonNumber = new ArrayList<>();
-        for (Salon salon : salons) {
-            salonNumber.add(salon.getNumber());
-        }
-        cbSalon.setItems(salonNumber);
+        cbSalon.setEnabled(false);
+        cbCinema.addValueChangeListener(e -> {
+            cbSalon.setEnabled(true);
+            List<String> salonNumber = new ArrayList<>();
+            for (Salon salon : salons) {
+                if (salon.getCinema().getName() == e.getValue())
+                    salonNumber.add(salon.getNumber());
+            }
+            cbSalon.setItems(salonNumber);
+        });
 
-        List<String> sessionTime = new ArrayList<>();
-        for (Session session : sessions) {
-            sessionTime.add(session.getTime());
-        }
-        cbSession.setItems(sessionTime);
+        cbSession.setEnabled(false);
+        cbSalon.addValueChangeListener(e -> {
+            cbSession.setEnabled(true);
+            List<String> sessionTime = new ArrayList<>();
+            for (Session session : sessions) {
+                if (session.getSalon().getNumber() == e.getValue() && session.getFilm().getName() == cbFilm.getValue() && session.getCinema().getName() == cbCinema.getValue() && session.getSalon().getCinema().getId() == session.getCinema().getId())
+                    if (session.getSalon().getNumber().equals("1") && session.getTime().equals("9:00-12:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (session.getSalon().getNumber().equals("3") && session.getTime().equals("12:00-15:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (session.getSalon().getNumber().equals("2") && session.getTime().equals("15:00-18:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (session.getSalon().getNumber().equals("4") && session.getTime().equals("18:00-21:00")){
+                        sessionTime.add(session.getTime());
+                    }
+            }
+            cbSession.setItems(sessionTime);
+        });
 
         H1 h1 = new H1("Ticket");
         h1.setHeight("100px");

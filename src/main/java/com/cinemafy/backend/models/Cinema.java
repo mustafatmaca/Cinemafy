@@ -7,9 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Data
@@ -21,8 +22,5 @@ public class Cinema{
     private Long id;
     private String name;
     private String city;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cinema", cascade = CascadeType.ALL)
-    private Set<Salon> salons = new HashSet<>();
 
 }

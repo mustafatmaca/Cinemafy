@@ -6,9 +6,12 @@ package com.cinemafy.backend.services;
 import com.cinemafy.backend.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<User> findAll();
+
+    Optional<User> findUser(Long id);
 
     Long count();
 

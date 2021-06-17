@@ -316,9 +316,8 @@ public class BootstrapData implements CommandLineRunner {
         ss4.setCinema(cinema6);
         salonService.save(ss4);
 
-        List<Salon> salons = salonService.findAll();
-        List<Film> films = filmService.findAll();
-        List<Cinema> cinemas = cinemaService.findAll();
+
+        //SESSION
         List<String> times = new ArrayList<>();
         times.add("9:00-12:00");
         times.add("12:00-15:00");
@@ -327,18 +326,9 @@ public class BootstrapData implements CommandLineRunner {
 
 
         for (String time : times) {
-            for (Film film : films) {
-                for (Salon salon : salons) {
-                    for (Cinema cnm : cinemas) {
-                        Session session = new Session();
-                        session.setFilm(film);
-                        session.setTime(time);
-                        session.setSalon(salon);
-                        session.setCinema(cnm);
-                        sessionService.save(session);
-                    }
-                }
-            }
+            Session session = new Session();
+            session.setTime(time);
+            sessionService.save(session);
         }
 
         //SESSION

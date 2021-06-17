@@ -62,28 +62,3 @@ public class MainView extends AppLayout implements AppShellConfigurator {
     }
 
 }
-
-/*
-    private final CinemaService cinemaService;
-    private Grid<Cinema> grid = new Grid<>(Cinema.class);
-
-    public MainView(CinemaService cinemaService){
-        this.cinemaService = cinemaService;
-
-        addClassName("list-view");
-        setSizeFull();
-        configureGrid();
-        add(grid);
-        updateList();
-    }
-
-    private void updateList() {
-        grid.setItems(cinemaService.findAll());
-    }
-
-
-    private void configureGrid() {
-        grid.addClassName("contact-grid");
-        grid.setSizeFull();
-        grid.setColumns("city", "name");
-    }*/

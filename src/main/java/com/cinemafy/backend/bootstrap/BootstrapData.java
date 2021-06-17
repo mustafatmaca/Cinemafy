@@ -5,6 +5,7 @@ import com.cinemafy.backend.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,17 @@ public class BootstrapData implements CommandLineRunner {
     private final SalonService salonService;
     private final SessionService sessionService;
     private final UserService userService;
+    private final TicketService ticketService;
 
     public BootstrapData(CategoryService categoryService, CinemaService cinemaService, FilmService filmService,
-                         SalonService salonService, SessionService sessionService, UserService userService) {
+                         SalonService salonService, SessionService sessionService, UserService userService, TicketService ticketService) {
         this.categoryService = categoryService;
         this.cinemaService = cinemaService;
         this.filmService = filmService;
         this.salonService = salonService;
         this.sessionService = sessionService;
         this.userService = userService;
+        this.ticketService = ticketService;
     }
 
     @Override
@@ -331,47 +334,6 @@ public class BootstrapData implements CommandLineRunner {
             sessionService.save(session);
         }
 
-        //SESSION
-        Session session = new Session();
-        session.setFilm(dune);
-        session.setTime("9:00-12:00");
-        session.setSalon(salon1);
-
-        Session session1 = new Session();
-        session1.setFilm(dune);
-        session1.setTime("12:00-15:00");
-        session1.setSalon(salon2);
-
-        Session session2 = new Session();
-        session2.setFilm(dune);
-        session2.setTime("15:00-18:00");
-        session2.setSalon(salon3);
-
-        Session session3 = new Session();
-        session3.setFilm(dune);
-        session3.setTime("18:00-21:00");
-        session3.setSalon(salon4);
-
-        Session sssn = new Session();
-        sssn.setFilm(dune);
-        sssn.setTime("9:00-12:00");
-        sssn.setSalon(s1);
-
-        Session sssn1 = new Session();
-        sssn1.setFilm(dune);
-        sssn1.setTime("12:00-15:00");
-        sssn1.setSalon(s2);
-
-        Session sssn2 = new Session();
-        sssn2.setFilm(dune);
-        sssn2.setTime("15:00-18:00");
-        sssn2.setSalon(s3);
-
-        Session sssn3 = new Session();
-        sssn3.setFilm(dune);
-        sssn3.setTime("18:00-21:00");
-        sssn3.setSalon(s4);
-
 
         //USER
         User user = new User();
@@ -387,5 +349,50 @@ public class BootstrapData implements CommandLineRunner {
         user1.setEmail("user");
         user1.setPassword("password");
         userService.save(user1);
+
+        User user2 = new User();
+        user2.setFirstName("Hello");
+        user2.setLastName("World");
+        user2.setEmail("hello");
+        user2.setPassword("world");
+        userService.save(user2);
+
+
+        //TICKET
+        Ticket ticket = new Ticket();
+        ticket.setFilm("Dune");
+        ticket.setCinema("Forum Kayseri");
+        ticket.setSalon("4");
+        ticket.setSession("18:00-21:00");
+        ticket.setDate(LocalDate.now());
+        ticket.setUser(user);
+        ticketService.save(ticket);
+
+        Ticket ticket1 = new Ticket();
+        ticket1.setFilm("Eternals");
+        ticket1.setCinema("Mall of İstanbul ");
+        ticket1.setSalon("3");
+        ticket1.setSession("15:00-18:00");
+        ticket1.setDate(LocalDate.now());
+        ticket1.setUser(user1);
+        ticketService.save(ticket1);
+
+        Ticket ticket2 = new Ticket();
+        ticket2.setFilm("Lord Of The Rings: Two Tower");
+        ticket2.setCinema("Venezia AVM");
+        ticket2.setSalon("2");
+        ticket2.setSession("9:00-12:00");
+        ticket2.setDate(LocalDate.now());
+        ticket2.setUser(user1);
+        ticketService.save(ticket2);
+
+        Ticket ticket3 = new Ticket();
+        ticket3.setFilm("Interstellar");
+        ticket3.setCinema("Mall of İstanbul");
+        ticket3.setSalon("1");
+        ticket3.setSession("12:00-15:00");
+        ticket3.setDate(LocalDate.now());
+        ticket3.setUser(user2);
+        ticketService.save(ticket3);
     }
 }

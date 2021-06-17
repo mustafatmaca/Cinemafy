@@ -7,6 +7,7 @@ import com.cinemafy.backend.models.*;
 import com.cinemafy.backend.services.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
@@ -102,6 +103,14 @@ public class TicketView extends VerticalLayout {
         }
         cbCinema.setItems(cinemaName);
 
+        cbFilm.addValueChangeListener(e -> {
+            List<String> sessionTime = new ArrayList<>();
+            for (Session session : sessions) {
+                sessionTime.add(session.getTime());
+            }
+            cbSession.setItems(sessionTime);
+        });
+
         cbSalon.setEnabled(false);
         cbSession.setEnabled(false);
         cbCinema.addValueChangeListener(e -> {
@@ -125,17 +134,61 @@ public class TicketView extends VerticalLayout {
         cbSalon.addValueChangeListener(e -> {
             List<String> sessionTime = new ArrayList<>();
             for (Session session : sessions) {
-                if (e.getValue().equals("1") && session.getTime().equals("9:00-12:00")){
-                    sessionTime.add(session.getTime());
+                if (cbFilm.getValue().equals("Dune")){
+                    if (e.getValue().equals("1") && session.getTime().equals("9:00-12:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("3") && session.getTime().equals("12:00-15:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("2") && session.getTime().equals("15:00-18:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("4") && session.getTime().equals("18:00-21:00")){
+                        sessionTime.add(session.getTime());
+                    }
                 }
-                else if (e.getValue().equals("3") && session.getTime().equals("12:00-15:00")){
-                    sessionTime.add(session.getTime());
+                else if (cbFilm.getValue().equals("Interstellar")){
+                    if (e.getValue().equals("1") && session.getTime().equals("12:00-15:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("3") && session.getTime().equals("9:00-12:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("2") && session.getTime().equals("18:00-21:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("4") && session.getTime().equals("15:00-18:00")){
+                        sessionTime.add(session.getTime());
+                    }
                 }
-                else if (e.getValue().equals("2") && session.getTime().equals("15:00-18:00")){
-                    sessionTime.add(session.getTime());
+                else if (cbFilm.getValue().equals("Lord Of The Rings: Two Tower")){
+                    if (e.getValue().equals("1") && session.getTime().equals("15:00-18:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("3") && session.getTime().equals("18:00-21:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("2") && session.getTime().equals("9:00-12:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("4") && session.getTime().equals("12:00-15:00")){
+                        sessionTime.add(session.getTime());
+                    }
                 }
-                else if (e.getValue().equals("4") && session.getTime().equals("18:00-21:00")){
-                    sessionTime.add(session.getTime());
+                else if (cbFilm.getValue().equals("Eternals")){
+                    if (e.getValue().equals("1") && session.getTime().equals("18:00-21:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("3") && session.getTime().equals("15:00-18:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("2") && session.getTime().equals("12:00-15:00")){
+                        sessionTime.add(session.getTime());
+                    }
+                    else if (e.getValue().equals("4") && session.getTime().equals("9:00-12:00")){
+                        sessionTime.add(session.getTime());
+                    }
                 }
             }
             cbSession.setItems(sessionTime);
@@ -193,7 +246,27 @@ public class TicketView extends VerticalLayout {
 
     private void configureGrid() {
         ticketGrid.addClassName("ticket-grid");
-        ticketGrid.setColumns("film", "cinema", "salon", "session");
+        ticketGrid.setColumns("film", "cinema", "salon", "session", "date");
+        ticketGrid.addComponentColumn(item -> createDeleteButton(ticketGrid, item)).setHeader("Actions");
+    }
+
+    private Button createDeleteButton(Grid<Ticket> ticketGrid, Ticket item) {
+        @SuppressWarnings("unchecked")
+        Button btnDelete = new Button("Delete");
+        btnDelete.addClickListener(buttonClickEvent -> {
+            ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
+                    "Are you sure you want to cancel this ticket?", "Delete", confirmEvent -> {
+                ticketService.delete(item);
+                updateList(item.getUser());
+            },
+                    "Cancel", cancelEvent -> {
+
+            });
+            dialog.setConfirmButtonTheme("error primary");
+
+            dialog.open();
+        });
+        return btnDelete;
     }
 
 }

@@ -63,11 +63,11 @@ public class StatisticView extends VerticalLayout {
         Label lblCinema2 = new Label("2." + cinemas.get(cinemas.size()-2).getKey());
         Label lblCinema3 = new Label("3." + cinemas.get(cinemas.size()-3).getKey());
 
-        Label lblSalon1 = new Label("1." + salons.get(cinemas.size()-1).getKey());
+        Label lblSalon1 = new Label("1." + salons.get(salons.size()-1).getKey());
         lblSalon1.setWidth("800px");
-        Label lblSalon2 = new Label("2." + salons.get(cinemas.size()-2).getKey());
+        Label lblSalon2 = new Label("2." + salons.get(salons.size()-2).getKey());
         lblSalon2.setWidth("800px");
-        Label lblSalon3 = new Label("3." + salons.get(cinemas.size()-3).getKey());
+        Label lblSalon3 = new Label("3." + salons.get(salons.size()-3).getKey());
         lblSalon3.setWidth("800px");
 
         Label lblSession1 = new Label("1." + sessions.get(sessions.size()-1).getKey());

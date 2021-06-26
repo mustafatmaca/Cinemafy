@@ -366,7 +366,7 @@ public class BootstrapData implements CommandLineRunner {
 
         Ticket ticket1 = new Ticket();
         ticket1.setFilm("Eternals");
-        ticket1.setCinema("Mall of İstanbul ");
+        ticket1.setCinema("Mall of İstanbul");
         ticket1.setSalon("3");
         ticket1.setSession("15:00-18:00");
         ticket1.setDate(LocalDate.now());
@@ -390,5 +390,23 @@ public class BootstrapData implements CommandLineRunner {
         ticket3.setDate(LocalDate.now());
         ticket3.setUser(user2);
         ticketService.save(ticket3);
+
+        Ticket ticket4 = new Ticket();
+        ticket4.setFilm("Dune");
+        ticket4.setCinema("Erasta AVM");
+        ticket4.setSalon("3");
+        ticket4.setSession("12:00-15:00");
+        ticket4.setDate(LocalDate.now());
+        ticket4.setUser(user2);
+        ticketService.save(ticket4);
+
+        Ticket ticket5 = new Ticket();
+        ticket5.setFilm("Dune");
+        ticket5.setCinema("Erasta İzmir AVM");
+        ticket5.setSalon("4");
+        ticket5.setSession("18:00-21:00");
+        ticket5.setDate(LocalDate.now());
+        ticket5.setUser(user2);
+        ticketService.save(ticket5);
     }
 }

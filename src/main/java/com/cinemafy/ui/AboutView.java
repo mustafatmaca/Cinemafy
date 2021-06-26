@@ -19,8 +19,6 @@ public class AboutView extends VerticalLayout {
         //CONTENT
         Label label = new Label("Cinemafy is a movie and theaters web app. Programming with Vaadin, Spring, H2 Database.");
 
-        Label label1 = new Label("Producted by Mustafa Atmaca");
-
         //LAYOUT
         VerticalLayout title = new VerticalLayout(h1);
         title.setAlignItems(Alignment.START);
@@ -28,10 +26,7 @@ public class AboutView extends VerticalLayout {
         VerticalLayout paragraph = new VerticalLayout(label);
         paragraph.setAlignItems(Alignment.CENTER);
 
-        VerticalLayout hint = new VerticalLayout(label1);
-        hint.setAlignItems(Alignment.CENTER);
-
-        add(title, paragraph, hint);
+        add(title, paragraph);
     }
 
 }

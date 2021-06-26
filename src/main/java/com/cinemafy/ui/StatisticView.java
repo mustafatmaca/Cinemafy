@@ -47,31 +47,31 @@ public class StatisticView extends VerticalLayout {
         H2 h2Film = new H2("Most Viewers Film");
         h2Film.setWidth("800px");
         H2 h2Cinema = new H2("Most Viewers Cinema");
-        H2 h2Salon = new H2("Most Viewers Salon");
+        H2 h2Salon = new H2("Most Viewers Film by Salon");
         h2Salon.setWidth("800px");
         H2 h2Session = new H2("Most Viewers Session");
 
-        Label lblFilm1 = new Label("1." + films.get(films.size()-1).getKey());
+        Label lblFilm1 = new Label("1st - " + films.get(films.size()-1).getKey());
         lblFilm1.setWidth("800px");
-        Label lblFilm2 = new Label("2." + films.get(films.size()-2).getKey());
+        Label lblFilm2 = new Label("2nd - " + films.get(films.size()-2).getKey());
         lblFilm2.setWidth("800px");
-        Label lblFilm3 = new Label("3." + films.get(films.size()-3).getKey());
+        Label lblFilm3 = new Label("3th - " + films.get(films.size()-3).getKey());
         lblFilm3.setWidth("800px");
 
-        Label lblCinema1 = new Label("1." + cinemas.get(cinemas.size()-1).getKey());
-        Label lblCinema2 = new Label("2." + cinemas.get(cinemas.size()-2).getKey());
-        Label lblCinema3 = new Label("3." + cinemas.get(cinemas.size()-3).getKey());
+        Label lblCinema1 = new Label("1st - " + cinemas.get(cinemas.size()-1).getKey());
+        Label lblCinema2 = new Label("2nd - " + cinemas.get(cinemas.size()-2).getKey());
+        Label lblCinema3 = new Label("3th - " + cinemas.get(cinemas.size()-3).getKey());
 
-        Label lblSalon1 = new Label("1." + cinemas.get(cinemas.size()-1).getKey() + "-Salon" + salons.get(salons.size()-1).getKey() + "-" + films.get(films.size()-1).getKey());
+        Label lblSalon1 = new Label("1st - " + "Salon" + salons.get(salons.size()-1).getKey() + "-" + films.get(films.size()-1).getKey());
         lblSalon1.setWidth("800px");
-        Label lblSalon2 = new Label("2." + cinemas.get(cinemas.size()-2).getKey() + "-Salon" + salons.get(salons.size()-2).getKey() + "-" + films.get(films.size()-2).getKey());
+        Label lblSalon2 = new Label("2nd - " + "Salon" + salons.get(salons.size()-2).getKey() + "-" + films.get(films.size()-2).getKey());
         lblSalon2.setWidth("800px");
-        Label lblSalon3 = new Label("3." + cinemas.get(cinemas.size()-3).getKey() + "-Salon" + salons.get(salons.size()-3).getKey() + "-" + films.get(films.size()-3).getKey());
+        Label lblSalon3 = new Label("3th - " + "Salon" + salons.get(salons.size()-3).getKey() + "-" + films.get(films.size()-3).getKey());
         lblSalon3.setWidth("800px");
 
-        Label lblSession1 = new Label("1." + sessions.get(sessions.size()-1).getKey());
-        Label lblSession2 = new Label("2." + sessions.get(sessions.size()-2).getKey());
-        Label lblSession3 = new Label("3." + sessions.get(sessions.size()-3).getKey());
+        Label lblSession1 = new Label("1st - " + sessions.get(sessions.size()-1).getKey());
+        Label lblSession2 = new Label("2nd - " + sessions.get(sessions.size()-2).getKey());
+        Label lblSession3 = new Label("3th - " + sessions.get(sessions.size()-3).getKey());
 
         //HEADER
         H1 h1 = new H1("Ticket");

@@ -53,7 +53,6 @@ public class TicketView extends VerticalLayout {
         }
 
         if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId") != null){
-            userService.findUser(Long.valueOf(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString())).ifPresent(System.out::println);
             user = userService.findUser(Long.valueOf(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString())).get();
         }
 

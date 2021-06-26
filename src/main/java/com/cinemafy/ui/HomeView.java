@@ -66,9 +66,9 @@ public class HomeView extends VerticalLayout {
         horizontalLayout2.setAlignItems(Alignment.CENTER);
 
         //HEADER
-        H1 h1 = new H1("Movie In Theaters");
+        H1 h1 = new H1("Movie In Cinemas");
         h1.setHeight("100px");
-        H1 h2 = new H1("Theaters");
+        H1 h2 = new H1("Cinemas");
         h2.setHeight("100px");
 
         //LAYOUT

@@ -15,6 +15,4 @@ public interface CinemaService {
     void delete(Cinema cinema);
 
     void save(Cinema cinema);
-
-    void saveAll(Iterable<Cinema> cinemas);
 }

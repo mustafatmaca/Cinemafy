@@ -24,7 +24,6 @@ public class StatisticView extends VerticalLayout {
 
     public StatisticView(TicketService ticketService) {
         this.ticketService = ticketService;
-        System.out.println("StatisticsView");
 
         List<Ticket> tickets = ticketService.findAll();
         List<String> ticketFilms = new ArrayList<>();
@@ -44,7 +43,7 @@ public class StatisticView extends VerticalLayout {
         List<Map.Entry<String, Long>> salons = sortList(turnMap(ticketSalons));
         List<Map.Entry<String, Long>> sessions = sortList(turnMap(ticketSessions));
 
-
+        //CONTENT
         H2 h2Film = new H2("Most Viewers Film");
         h2Film.setWidth("800px");
         H2 h2Cinema = new H2("Most Viewers Cinema");
@@ -63,20 +62,22 @@ public class StatisticView extends VerticalLayout {
         Label lblCinema2 = new Label("2." + cinemas.get(cinemas.size()-2).getKey());
         Label lblCinema3 = new Label("3." + cinemas.get(cinemas.size()-3).getKey());
 
-        Label lblSalon1 = new Label("1." + salons.get(salons.size()-1).getKey());
+        Label lblSalon1 = new Label("1." + cinemas.get(cinemas.size()-1).getKey() + "-Salon" + salons.get(salons.size()-1).getKey() + "-" + films.get(films.size()-1).getKey());
         lblSalon1.setWidth("800px");
-        Label lblSalon2 = new Label("2." + salons.get(salons.size()-2).getKey());
+        Label lblSalon2 = new Label("2." + cinemas.get(cinemas.size()-2).getKey() + "-Salon" + salons.get(salons.size()-2).getKey() + "-" + films.get(films.size()-2).getKey());
         lblSalon2.setWidth("800px");
-        Label lblSalon3 = new Label("3." + salons.get(salons.size()-3).getKey());
+        Label lblSalon3 = new Label("3." + cinemas.get(cinemas.size()-3).getKey() + "-Salon" + salons.get(salons.size()-3).getKey() + "-" + films.get(films.size()-3).getKey());
         lblSalon3.setWidth("800px");
 
         Label lblSession1 = new Label("1." + sessions.get(sessions.size()-1).getKey());
         Label lblSession2 = new Label("2." + sessions.get(sessions.size()-2).getKey());
         Label lblSession3 = new Label("3." + sessions.get(sessions.size()-3).getKey());
 
+        //HEADER
         H1 h1 = new H1("Ticket");
         h1.setHeight("50px");
 
+        //LAYOUT
         VerticalLayout title = new VerticalLayout(h1);
         title.setAlignItems(Alignment.START);
 
@@ -99,12 +100,14 @@ public class StatisticView extends VerticalLayout {
         add(title, verticalLayout, verticalLayout1);
     }
 
+    //Sorting list by frequency
     private List<Map.Entry<String, Long>> sortList(Map<String, Long> turnMap) {
         List<Map.Entry<String, Long>> list = new ArrayList<>(turnMap.entrySet());
         list.sort(Map.Entry.comparingByValue());
         return list;
     }
 
+    //Turn list to map
     private Map<String, Long> turnMap(List<String> list) {
         return list.stream().collect(Collectors.groupingBy(w -> w,Collectors.counting()));
     }

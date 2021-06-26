@@ -27,7 +27,6 @@ public class MovieView extends VerticalLayout {
     private final FilmService filmService;
 
     public MovieView(FilmService filmService) {
-        System.out.println("MovieView");
         this.filmService = filmService;
 
         setWidth("%100");
@@ -36,6 +35,7 @@ public class MovieView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.BETWEEN);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
+        //CONTENT
         List<Film> films = filmService.findAll();
         VerticalLayout verticalLayout = new VerticalLayout();
 
@@ -62,9 +62,11 @@ public class MovieView extends VerticalLayout {
         }
         verticalLayout.setAlignItems(Alignment.START);
 
+        //HEADER
         H1 h1 = new H1("Movies");
         h1.setHeight("100px");
 
+        //LAYOUT
         HorizontalLayout title = new HorizontalLayout(h1);
         title.setAlignItems(Alignment.START);
 

@@ -41,9 +41,4 @@ public class FilmServiceImpl implements FilmService{
     public void save(Film film) {
         filmRepository.save(film);
     }
-
-    @Override
-    public void saveAll(Iterable<Film> films) {
-        filmRepository.saveAll(films);
-    }
 }

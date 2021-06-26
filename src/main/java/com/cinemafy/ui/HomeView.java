@@ -27,7 +27,6 @@ public class HomeView extends VerticalLayout {
     private final CinemaService cinemaService;
 
     public HomeView(FilmService filmService, CinemaService cinemaService) {
-        System.out.println("HomeView");
         this.filmService = filmService;
         this.cinemaService = cinemaService;
 
@@ -37,6 +36,7 @@ public class HomeView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.BETWEEN);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
+        //CONTENT
         List<Film> films = filmService.findAll();
         HorizontalLayout horizontalLayout1 = new HorizontalLayout();
 
@@ -65,11 +65,13 @@ public class HomeView extends VerticalLayout {
         }
         horizontalLayout2.setAlignItems(Alignment.CENTER);
 
+        //HEADER
         H1 h1 = new H1("Movie In Theaters");
         h1.setHeight("100px");
         H1 h2 = new H1("Theaters");
         h2.setHeight("100px");
 
+        //LAYOUT
         HorizontalLayout title1 = new HorizontalLayout(h1);
         title1.setAlignItems(Alignment.START);
 

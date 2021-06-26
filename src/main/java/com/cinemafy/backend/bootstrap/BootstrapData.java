@@ -1,4 +1,7 @@
 package com.cinemafy.backend.bootstrap;
+/**
+ * @author Mustafa Atmaca
+ */
 
 import com.cinemafy.backend.models.*;
 import com.cinemafy.backend.services.*;
@@ -110,43 +113,36 @@ public class BootstrapData implements CommandLineRunner {
         Cinema cinema = new Cinema();
         cinema.setName("Erasta AVM");
         cinema.setCity("Edirne");
-        //cinema.setSalons(salons);
         cinemaService.save(cinema);
 
         Cinema cinema1 = new Cinema();
         cinema1.setName("Kipa AVM");
         cinema1.setCity("Edirne");
-        //cinema1.setSalons(salons);
         cinemaService.save(cinema1);
 
         Cinema cinema2 = new Cinema();
         cinema2.setName("Forum İstanbul");
         cinema2.setCity("İstanbul");
-        //cinema2.setSalons(salons);
         cinemaService.save(cinema2);
 
         Cinema cinema3 = new Cinema();
         cinema3.setName("Mall of İstanbul");
         cinema3.setCity("İstanbul");
-        //cinema3.setSalons(salons);
         cinemaService.save(cinema3);
 
         Cinema cinema4 = new Cinema();
         cinema4.setName("Venezia AVM");
         cinema4.setCity("İstanbul");
-        //cinema4.setSalons(salons);
         cinemaService.save(cinema4);
 
         Cinema cinema5 = new Cinema();
         cinema5.setName("Erasta İzmir AVM");
         cinema5.setCity("İzmir");
-        //cinema5.setSalons(salons);
         cinemaService.save(cinema5);
 
         Cinema cinema6 = new Cinema();
         cinema6.setName("Forum Kayseri");
         cinema6.setCity("Kayseri");
-        //cinema6.setSalons(salons);
         cinemaService.save(cinema6);
 
 

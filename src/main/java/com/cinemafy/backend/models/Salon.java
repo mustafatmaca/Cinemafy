@@ -22,5 +22,4 @@ public class Salon {
 
     @ManyToOne
     private Cinema cinema;
-
 }

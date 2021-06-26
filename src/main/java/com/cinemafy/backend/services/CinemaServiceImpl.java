@@ -40,10 +40,4 @@ public class CinemaServiceImpl implements CinemaService{
     public void save(Cinema cinema) {
         cinemaRepository.save(cinema);
     }
-
-    @Override
-    public void saveAll(Iterable<Cinema> cinemas) {
-        cinemaRepository.saveAll(cinemas);
-    }
-
 }

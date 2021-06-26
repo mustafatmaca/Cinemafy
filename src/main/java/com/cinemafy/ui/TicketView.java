@@ -33,7 +33,6 @@ public class TicketView extends VerticalLayout {
     private Grid<Ticket> ticketGrid = new Grid<>(Ticket.class);
 
     public TicketView(UserService userService, FilmService filmService, CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) {
-        System.out.println("TicketView");
         this.userService = userService;
         this.filmService = filmService;
         this.cinemaService = cinemaService;
@@ -50,17 +49,12 @@ public class TicketView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         if (VaadinSession.getCurrent().getSession().getAttribute("TicketFilm") != null){
-            System.out.println(VaadinSession.getCurrent().getSession().getAttribute("TicketFilm").toString());
             ticketFilm = VaadinSession.getCurrent().getSession().getAttribute("TicketFilm").toString();
         }
 
         if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId") != null){
-            System.out.println(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId"));
-            System.out.println(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString());
             userService.findUser(Long.valueOf(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString())).ifPresent(System.out::println);
             user = userService.findUser(Long.valueOf(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString())).get();
-            System.out.println(user);
-            //user = userService.findById(Long.valueOf(VaadinSession.getCurrent().getAttribute("LoggedInUserId").toString()));
         }
 
         //COMBOBOX
@@ -82,13 +76,7 @@ public class TicketView extends VerticalLayout {
         cbSession.setLabel("Session");
         cbSession.setWidth("400px");
 
-        DatePicker valueDatePicker = new DatePicker();
-        valueDatePicker.setWidth("400px");
-        valueDatePicker.setMin(LocalDate.now());
-        LocalDate now = LocalDate.now();
-        valueDatePicker.setValue(now);
-
-
+        //setValue to cbFilm, film's names
         List<String> filmName = new ArrayList<>();
         for (Film film : films) {
             filmName.add(film.getName());
@@ -97,12 +85,14 @@ public class TicketView extends VerticalLayout {
         cbFilm.setValue(ticketFilm);
         VaadinSession.getCurrent().getSession().setAttribute("TicketFilm", null);
 
+        //setValue to cbCinema, cinema's names
         List<String> cinemaName = new ArrayList<>();
         for (Cinema cinema : cinemas) {
             cinemaName.add(cinema.getName());
         }
         cbCinema.setItems(cinemaName);
 
+        //setValue to cbSession, sessions if film selected
         cbFilm.addValueChangeListener(e -> {
             List<String> sessionTime = new ArrayList<>();
             for (Session session : sessions) {
@@ -111,6 +101,7 @@ public class TicketView extends VerticalLayout {
             cbSession.setItems(sessionTime);
         });
 
+        //setValue to cbSession and cbSalon, if cinema selected
         cbSalon.setEnabled(false);
         cbSession.setEnabled(false);
         cbCinema.addValueChangeListener(e -> {
@@ -131,6 +122,7 @@ public class TicketView extends VerticalLayout {
             cbSalon.setItems(salonNumber);
         });
 
+        //setValue to cbSession, if salon selected
         cbSalon.addValueChangeListener(e -> {
             List<String> sessionTime = new ArrayList<>();
             for (Session session : sessions) {
@@ -201,6 +193,13 @@ public class TicketView extends VerticalLayout {
         H2 h2 = new H2("Your Tickets");
         h1.setHeight("80px");
 
+        //DATEPICKER
+        DatePicker valueDatePicker = new DatePicker();
+        valueDatePicker.setWidth("400px");
+        valueDatePicker.setMin(LocalDate.now());
+        LocalDate now = LocalDate.now();
+        valueDatePicker.setValue(now);
+
         //BUTTON
         Button btBuy = new Button("Buy a Ticket");
         btBuy.setWidth("200px");
@@ -260,10 +259,8 @@ public class TicketView extends VerticalLayout {
                 updateList(item.getUser());
             },
                     "Cancel", cancelEvent -> {
-
             });
             dialog.setConfirmButtonTheme("error primary");
-
             dialog.open();
         });
         return btnDelete;

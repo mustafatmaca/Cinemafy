@@ -18,13 +18,4 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String time;
-
-    @ManyToOne
-    private Film film;
-
-    @ManyToOne
-    private Salon salon;
-
-    @ManyToOne
-    private Cinema cinema;
 }

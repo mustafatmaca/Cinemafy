@@ -8,7 +8,6 @@ import com.cinemafy.backend.services.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,13 +20,15 @@ public class LoginView extends VerticalLayout {
     private final UserService userService;
 
     public LoginView(UserService userService) {
-        System.out.println("LoginView");
         this.userService = userService;
+
+        //HEADER
         H1 header = new H1("Cinemafy");
 
         VerticalLayout title = new VerticalLayout(header);
         title.setAlignItems(Alignment.START);
 
+        //LOGINFORM
         LoginForm loginForm = new LoginForm();
         loginForm.setI18n(createI18n());
 
@@ -44,6 +45,7 @@ public class LoginView extends VerticalLayout {
             }
         });
 
+        //SIGNUP BUTTON
         Button button = new Button("Sign Up");
         button.addClickListener(e -> {
            navigateToSignUpPage();
@@ -54,6 +56,7 @@ public class LoginView extends VerticalLayout {
         add(title, loginForm, button);
     }
 
+    //LoginForm Content
     private LoginI18n createI18n() {
         final LoginI18n i18n = LoginI18n.createDefault();
 
@@ -64,21 +67,9 @@ public class LoginView extends VerticalLayout {
         return i18n;
     }
 
+    //Navigate SignUp Page
     private void navigateToSignUpPage() {
         UI.getCurrent().navigate("/register");
     }
-
-    private boolean authenticate(AbstractLogin.LoginEvent e) {
-        if (e.getUsername().equals("user") && e.getPassword().equals("password")){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    private void navigateToMainPage() {
-        UI.getCurrent().navigate("");
-    }
-
 
 }

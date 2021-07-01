@@ -46,7 +46,7 @@ public class HomeView extends VerticalLayout {
             Label ctg = new Label(film.getCategory().getGenre());
             ctg.setHeight("20px");
             String src = film.getSrc();
-            Image img = new Image(src, "Dune");
+            Image img = new Image(src, film.getName());
             img.setHeight("384px");
             img.setWidth("256px");
             horizontalLayout1.add(new VerticalLayout(img,name,ctg));

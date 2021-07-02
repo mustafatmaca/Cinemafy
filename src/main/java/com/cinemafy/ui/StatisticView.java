@@ -74,7 +74,7 @@ public class StatisticView extends VerticalLayout {
         Label lblSession3 = new Label("3th - " + sessions.get(sessions.size()-3).getKey());
 
         //HEADER
-        H1 h1 = new H1("Ticket");
+        H1 h1 = new H1("Statistics");
         h1.setHeight("50px");
 
         //LAYOUT

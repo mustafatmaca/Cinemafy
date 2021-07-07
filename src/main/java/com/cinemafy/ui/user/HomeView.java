@@ -1,4 +1,4 @@
-package com.cinemafy.ui;
+package com.cinemafy.ui.user;
 /**
  * @author Mustafa Atmaca
  */

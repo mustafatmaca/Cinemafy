@@ -14,7 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
-@Route("/login")
+@Route("/userlogin")
 public class LoginView extends VerticalLayout {
 
     private final UserService userService;
@@ -37,8 +37,14 @@ public class LoginView extends VerticalLayout {
 
             if (result.getId()!=null)
             {
-                VaadinSession.getCurrent().getSession().setAttribute("LoggedInUserId",result.getId());
-                UI.getCurrent().getPage().setLocation("/");
+                if (VaadinSession.getCurrent().getSession().getAttribute("LoginType").toString().equals("Admin")){
+                    VaadinSession.getCurrent().getSession().setAttribute("LoggedInUserId",result.getId());
+                    UI.getCurrent().getPage().setLocation("/administrator");
+                }
+                else if (VaadinSession.getCurrent().getSession().getAttribute("LoginType").toString().equals("User")){
+                    VaadinSession.getCurrent().getSession().setAttribute("LoggedInUserId",result.getId());
+                    UI.getCurrent().getPage().setLocation("/");
+                }
             }else
             {
                 loginForm.setError(true);
@@ -61,7 +67,7 @@ public class LoginView extends VerticalLayout {
         final LoginI18n i18n = LoginI18n.createDefault();
 
         i18n.setHeader(new LoginI18n.Header());
-        i18n.getForm().setTitle("Login");
+        i18n.getForm().setTitle("User Login");
         i18n.getForm().setSubmit("Login");
         i18n.getForm().setUsername("Email");
         return i18n;

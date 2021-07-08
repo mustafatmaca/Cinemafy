@@ -3,6 +3,7 @@ package com.cinemafy.backend.services;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.backend.models.Cinema;
 import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.repositories.SalonRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class SalonServiceImpl implements SalonService{
     public List<Salon> findAll() {
         return StreamSupport.stream(salonRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Salon> findByCinema(Cinema cinema) {
+        return salonRepository.findByCinema_Id(cinema.getId());
     }
 
     @Override

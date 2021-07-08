@@ -20,7 +20,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "film", layout = AdminView.class)
@@ -35,6 +34,7 @@ public class FilmAndCategoryView extends VerticalLayout {
     Dialog dialogCategory = new Dialog();
     Binder<Film> filmBinder = new Binder<>();
     Binder<Category> categoryBinder = new Binder<>();
+    Long itemId = 0L;
 
     public FilmAndCategoryView(FilmService filmService, CategoryService categoryService) {
         this.filmService = filmService;
@@ -50,12 +50,14 @@ public class FilmAndCategoryView extends VerticalLayout {
 
         Button btnNewFilm = new Button("New Film");
         btnNewFilm.addClickListener(buttonClickEvent -> {
+            itemId = 0L;
             filmBinder.readBean(new Film());
             dialogFilm.open();
         });
 
         Button btnNewCategory = new Button("New Category");
         btnNewCategory.addClickListener(buttonClickEvent -> {
+            itemId = 0L;
             categoryBinder.readBean(new Category());
             dialogCategory.open();
         });
@@ -66,19 +68,18 @@ public class FilmAndCategoryView extends VerticalLayout {
     private void configureFilmDialog(Dialog dialog) {
         dialog.setModal(true);
         TextField tfName = new TextField("Name");
-        TextField tfRuntime = new TextField("City(ex. '2h30m')");
+        TextField tfRuntime = new TextField("Runtime(ex. '2h30m')");
         TextField tfSrc = new TextField("Image Link");
+        ComboBox<Category> cbCategory = new ComboBox("Category");
         List<Category> categories = categoryService.findAll();
-        List<String> categoryNames = new ArrayList<>();
-        for (Category category : categories) {
-            categoryNames.add(category.getGenre());
-        }
-        ComboBox cbCategory = new ComboBox("Category");
-        cbCategory.setItems(categoryNames);
+
+        cbCategory.setItems(categories);
+        cbCategory.setItemLabelGenerator(Category::getGenre);
 
         filmBinder.bind(tfName,Film::getName,Film::setName);
         filmBinder.bind(tfRuntime,Film::getRuntime,Film::setRuntime);
         filmBinder.bind(tfSrc,Film::getSrc,Film::setSrc);
+        filmBinder.bind(cbCategory,Film::getCategory,Film::setCategory);
 
         FormLayout formLayout = new FormLayout();
         formLayout.add(tfName,tfRuntime,tfSrc,cbCategory);
@@ -101,6 +102,7 @@ public class FilmAndCategoryView extends VerticalLayout {
                 e.printStackTrace();
             }
 
+            film.setId(itemId);
             filmService.save(film);
             updateList();
             dialog.close();
@@ -138,6 +140,7 @@ public class FilmAndCategoryView extends VerticalLayout {
                 e.printStackTrace();
             }
 
+            category.setId(itemId);
             categoryService.save(category);
             updateList();
             dialog.close();
@@ -155,7 +158,7 @@ public class FilmAndCategoryView extends VerticalLayout {
 
     private void configureGrid() {
         filmGrid.addClassName("film-grid");
-        filmGrid.setColumns("name", "runtime", "category.genre", "src");
+        filmGrid.setColumns("name", "runtime", "category.genre");
         filmGrid.addComponentColumn(i -> {
             Image image = new Image(i.getSrc(), i.getName());
             image.setHeight("192px");
@@ -186,6 +189,7 @@ public class FilmAndCategoryView extends VerticalLayout {
 
         Button btnUpdate = new Button("Update");
         btnUpdate.addClickListener(buttonClickEvent -> {
+            itemId = item.getId();
             filmBinder.readBean(item);
             dialogFilm.open();
         });
@@ -201,6 +205,10 @@ public class FilmAndCategoryView extends VerticalLayout {
         btnDelete.addClickListener(buttonClickEvent -> {
             ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
+                List<Film> films = filmService.findByCategory(item);
+                for (Film film:films) {
+                    filmService.delete(film);
+                }
                 categoryService.delete(item);
                 updateList();
             },
@@ -212,6 +220,7 @@ public class FilmAndCategoryView extends VerticalLayout {
 
         Button btnUpdate = new Button("Update");
         btnUpdate.addClickListener(buttonClickEvent -> {
+            itemId = item.getId();
             categoryBinder.readBean(item);
             dialogCategory.open();
         });

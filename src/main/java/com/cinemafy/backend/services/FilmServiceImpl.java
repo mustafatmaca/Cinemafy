@@ -3,6 +3,7 @@ package com.cinemafy.backend.services;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.backend.models.Category;
 import com.cinemafy.backend.models.Film;
 import com.cinemafy.backend.repositories.FilmRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class FilmServiceImpl implements FilmService{
     public List<Film> findAll() {
         return StreamSupport.stream(filmRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Film> findByCategory(Category category) {
+        return filmRepository.findByCategory_Id(category.getId());
     }
 
     @Override

@@ -4,7 +4,11 @@ package com.cinemafy.backend.repositories;
  */
 
 import com.cinemafy.backend.models.Film;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface FilmRepository extends CrudRepository<Film, Long> {
+import java.util.List;
+
+public interface FilmRepository extends CrudRepository<Film, Long>, JpaRepository<Film, Long> {
+    List<Film> findByCategory_Id(Long id);
 }

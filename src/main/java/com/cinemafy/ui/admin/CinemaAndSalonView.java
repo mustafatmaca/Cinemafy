@@ -19,7 +19,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "cinema", layout = AdminView.class)
@@ -33,6 +32,7 @@ public class CinemaAndSalonView extends VerticalLayout {
     Dialog dialogSalon = new Dialog();
     Binder<Cinema> cinemaBinder = new Binder<>();
     Binder<Salon> salonBinder = new Binder<>();
+    Long itemId = 0L;
 
     public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService) {
         this.cinemaService = cinemaService;
@@ -48,12 +48,14 @@ public class CinemaAndSalonView extends VerticalLayout {
 
         Button btnNewCinema = new Button("New Cinema");
         btnNewCinema.addClickListener(buttonClickEvent -> {
+            itemId = 0L;
             cinemaBinder.readBean(new Cinema());
             dialogCinema.open();
         });
 
         Button btnNewSalon = new Button("New Salon");
         btnNewSalon.addClickListener(buttonClickEvent -> {
+            itemId = 0L;
             salonBinder.readBean(new Salon());
             dialogSalon.open();
         });
@@ -90,6 +92,7 @@ public class CinemaAndSalonView extends VerticalLayout {
                 e.printStackTrace();
             }
 
+            cinema.setId(itemId);
             cinemaService.save(cinema);
             updateList();
             dialog.close();
@@ -105,13 +108,11 @@ public class CinemaAndSalonView extends VerticalLayout {
         Cinema cinema1 = new Cinema();
         TextField tfNumber = new TextField("Number");
         TextField tfSeatCapacity = new TextField("Seat Capacity");
+        ComboBox<Cinema> cbCinema = new ComboBox("Cinema");
         List<Cinema> cinemas = cinemaService.findAll();
-        List<String> cinemaNames = new ArrayList<>();
-        for (Cinema cinema : cinemas) {
-            cinemaNames.add(cinema.getName());
-        }
-        ComboBox cbCinema = new ComboBox("Cinema");
-        cbCinema.setItems(cinemaNames);
+
+        cbCinema.setItems(cinemas);
+        cbCinema.setItemLabelGenerator(Cinema::getName);
 
         salonBinder.bind(tfNumber,Salon::getNumber,Salon::setNumber);
         salonBinder.bind(tfSeatCapacity,Salon::getSeatCapacity,Salon::setSeatCapacity);
@@ -138,6 +139,7 @@ public class CinemaAndSalonView extends VerticalLayout {
                 e.printStackTrace();
             }
 
+            salon.setId(itemId);
             salonService.save(salon);
             updateList();
             dialog.close();
@@ -169,6 +171,10 @@ public class CinemaAndSalonView extends VerticalLayout {
         btnDelete.addClickListener(buttonClickEvent -> {
             ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
+                List<Salon> salons = salonService.findByCinema(item);
+                for (Salon salon:salons) {
+                    salonService.delete(salon);
+                }
                 cinemaService.delete(item);
                 updateList();
             },
@@ -180,6 +186,7 @@ public class CinemaAndSalonView extends VerticalLayout {
 
         Button btnUpdate = new Button("Update");
         btnUpdate.addClickListener(buttonClickEvent -> {
+            itemId = item.getId();
             cinemaBinder.readBean(item);
             dialogCinema.open();
         });
@@ -206,6 +213,7 @@ public class CinemaAndSalonView extends VerticalLayout {
 
         Button btnUpdate = new Button("Update");
         btnUpdate.addClickListener(buttonClickEvent -> {
+            itemId = item.getId();
             salonBinder.readBean(item);
             dialogSalon.open();
         });

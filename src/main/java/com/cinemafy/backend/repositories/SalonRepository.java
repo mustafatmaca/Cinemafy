@@ -4,7 +4,11 @@ package com.cinemafy.backend.repositories;
  */
 
 import com.cinemafy.backend.models.Salon;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface SalonRepository extends CrudRepository<Salon, Long> {
+import java.util.List;
+
+public interface SalonRepository extends CrudRepository<Salon, Long>, JpaRepository<Salon, Long> {
+    List<Salon> findByCinema_Id(Long id);
 }

@@ -15,9 +15,12 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 
 @PWA(name = "Cinemafy", shortName = "Cinemafy")
+@Theme(variant = Lumo.DARK)
 public class MainView extends AppLayout implements AppShellConfigurator {
 
     public MainView() {

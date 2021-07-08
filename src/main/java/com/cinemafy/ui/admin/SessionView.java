@@ -23,6 +23,7 @@ public class SessionView extends VerticalLayout {
     private Grid<Session> sessionGrid = new Grid<>(Session.class);;
     Dialog dialogSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
+    Long itemId = 0L;
 
     public SessionView(SessionService sessionService) {
         this.sessionService = sessionService;
@@ -35,6 +36,7 @@ public class SessionView extends VerticalLayout {
 
         Button btnNewSession = new Button("New Session");
         btnNewSession.addClickListener(buttonClickEvent -> {
+            itemId = 0L;
             sessionBinder.readBean(new Session());
             dialogSession.open();
         });
@@ -70,6 +72,7 @@ public class SessionView extends VerticalLayout {
                 e.printStackTrace();
             }
 
+            session.setId(itemId);
             sessionService.save(session);
             updateList();
             dialog.close();
@@ -107,6 +110,7 @@ public class SessionView extends VerticalLayout {
 
         Button btnUpdate = new Button("Update");
         btnUpdate.addClickListener(buttonClickEvent -> {
+            itemId = item.getId();
             sessionBinder.readBean(item);
             dialogSession.open();
         });

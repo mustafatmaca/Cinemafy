@@ -43,7 +43,7 @@ public class MovieView extends VerticalLayout {
             H3 ctgHead = new H3("Category");
             Label ctg = new Label(film.getCategory().getGenre());
             H3 rntmHead = new H3("Runtime");
-            Label rntm = new Label(film.getRuntime());
+            Label rntm = new Label(String.valueOf(film.getRuntime()));
             Button ticket = new Button("Ticket");
             ticket.setWidth("200px");
             ticket.addClickListener(e -> {

@@ -8,9 +8,10 @@ import com.cinemafy.backend.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
@@ -82,28 +83,28 @@ public class BootstrapData implements CommandLineRunner {
         //FILM
         Film interstellar = new Film();
         interstellar.setName("Interstellar");
-        interstellar.setRuntime("2h49m");
+        interstellar.setRuntime(169);
         interstellar.setSrc("https://tr.web.img3.acsta.net/r_1920_1080/img/08/fe/08feaecbc56c480c082003c632f3bc2f.jpg");
         interstellar.setCategory(scifi);
         filmService.save(interstellar);
 
         Film lotr = new Film();
         lotr.setName("Lord Of The Rings: Two Tower");
-        lotr.setRuntime("2h59m");
+        lotr.setRuntime(179);
         lotr.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/img/6f/b4/6fb4b6e04af5e72f61b265be07143748.jpg");
         lotr.setCategory(fantasy);
         filmService.save(lotr);
 
         Film dune = new Film();
         dune.setName("Dune");
-        dune.setRuntime("2h10m");
+        dune.setRuntime(130);
         dune.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/pictures/20/04/30/20/27/2963799.jpg");
         dune.setCategory(scifi);
         filmService.save(dune);
 
         Film eternals = new Film();
         eternals.setName("Eternals");
-        eternals.setRuntime("1h56m");
+        eternals.setRuntime(116);
         eternals.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/pictures/21/05/25/10/14/2918182.jpg");
         eternals.setCategory(fantasy);
         filmService.save(eternals);
@@ -165,12 +166,6 @@ public class BootstrapData implements CommandLineRunner {
         salon3.setCinema(cinema);
         salonService.save(salon3);
 
-        Salon salon4 = new Salon();
-        salon4.setNumber("4");
-        salon4.setSeatCapacity("90");
-        salon4.setCinema(cinema);
-        salonService.save(salon4);
-
         Salon s1 = new Salon();
         s1.setNumber("1");
         s1.setSeatCapacity("45");
@@ -189,12 +184,6 @@ public class BootstrapData implements CommandLineRunner {
         s3.setCinema(cinema1);
         salonService.save(s3);
 
-        Salon s4 = new Salon();
-        s4.setNumber("4");
-        s4.setSeatCapacity("90");
-        s4.setCinema(cinema1);
-        salonService.save(s4);
-
         Salon sl1 = new Salon();
         sl1.setNumber("1");
         sl1.setSeatCapacity("45");
@@ -206,18 +195,6 @@ public class BootstrapData implements CommandLineRunner {
         sl2.setSeatCapacity("60");
         sl2.setCinema(cinema2);
         salonService.save(sl2);
-
-        Salon sl3 = new Salon();
-        sl3.setNumber("3");
-        sl3.setSeatCapacity("30");
-        sl3.setCinema(cinema2);
-        salonService.save(sl3);
-
-        Salon sl4 = new Salon();
-        sl4.setNumber("4");
-        sl4.setSeatCapacity("90");
-        sl4.setCinema(cinema2);
-        salonService.save(sl4);
 
         Salon sln1 = new Salon();
         sln1.setNumber("1");
@@ -249,24 +226,6 @@ public class BootstrapData implements CommandLineRunner {
         sal1.setCinema(cinema4);
         salonService.save(sal1);
 
-        Salon sal2 = new Salon();
-        sal2.setNumber("2");
-        sal2.setSeatCapacity("60");
-        sal2.setCinema(cinema4);
-        salonService.save(sal2);
-
-        Salon sal3 = new Salon();
-        sal3.setNumber("3");
-        sal3.setSeatCapacity("30");
-        sal3.setCinema(cinema4);
-        salonService.save(sal3);
-
-        Salon sal4 = new Salon();
-        sal4.setNumber("4");
-        sal4.setSeatCapacity("90");
-        sal4.setCinema(cinema4);
-        salonService.save(sal4);
-
         Salon sn1 = new Salon();
         sn1.setNumber("1");
         sn1.setSeatCapacity("45");
@@ -278,18 +237,6 @@ public class BootstrapData implements CommandLineRunner {
         sn2.setSeatCapacity("60");
         sn2.setCinema(cinema5);
         salonService.save(sn2);
-
-        Salon sn3 = new Salon();
-        sn3.setNumber("3");
-        sn3.setSeatCapacity("30");
-        sn3.setCinema(cinema5);
-        salonService.save(sn3);
-
-        Salon sn4 = new Salon();
-        sn4.setNumber("4");
-        sn4.setSeatCapacity("90");
-        sn4.setCinema(cinema5);
-        salonService.save(sn4);
 
         Salon ss1 = new Salon();
         ss1.setNumber("1");
@@ -309,26 +256,28 @@ public class BootstrapData implements CommandLineRunner {
         ss3.setCinema(cinema6);
         salonService.save(ss3);
 
-        Salon ss4 = new Salon();
-        ss4.setNumber("4");
-        ss4.setSeatCapacity("90");
-        ss4.setCinema(cinema6);
-        salonService.save(ss4);
-
-
         //SESSION
-        List<String> times = new ArrayList<>();
-        times.add("9:00-12:00");
-        times.add("12:00-15:00");
-        times.add("15:00-18:00");
-        times.add("18:00-21:00");
 
+        Session session = new Session();
+        session.setStartTime(LocalTime.of(9,0));
+        session.setEndTime(session.getStartTime().plus(Duration.ofMinutes(dune.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session.setFilm(dune);
+        session.setSalon(salon1);
+        sessionService.save(session);
 
-        for (String time : times) {
-            Session session = new Session();
-            session.setTime(time);
-            sessionService.save(session);
-        }
+        Session session1 = new Session();
+        session1.setStartTime(session.getEndTime());
+        session1.setEndTime(session1.getStartTime().plus(Duration.ofMinutes(interstellar.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session1.setFilm(interstellar);
+        session1.setSalon(salon1);
+        sessionService.save(session1);
+
+        Session session2 = new Session();
+        session2.setStartTime(LocalTime.of(9,0));
+        session2.setEndTime(session2.getStartTime().plus(Duration.ofMinutes(eternals.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session2.setFilm(eternals);
+        session2.setSalon(sln1);
+        sessionService.save(session2);
 
 
         //USER
@@ -356,57 +305,39 @@ public class BootstrapData implements CommandLineRunner {
 
         //TICKET
         Ticket ticket = new Ticket();
-        ticket.setFilm("Dune");
-        ticket.setCinema("Forum Kayseri");
-        ticket.setSalon("4");
-        ticket.setSession("18:00-21:00");
-        ticket.setDate(LocalDate.now());
         ticket.setUser(user);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session);
         ticketService.save(ticket);
 
         Ticket ticket1 = new Ticket();
-        ticket1.setFilm("Eternals");
-        ticket1.setCinema("Mall of İstanbul");
-        ticket1.setSalon("3");
-        ticket1.setSession("15:00-18:00");
-        ticket1.setDate(LocalDate.now());
-        ticket1.setUser(user1);
+        ticket.setUser(user);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session1);
         ticketService.save(ticket1);
 
         Ticket ticket2 = new Ticket();
-        ticket2.setFilm("Lord Of The Rings: Two Tower");
-        ticket2.setCinema("Venezia AVM");
-        ticket2.setSalon("2");
-        ticket2.setSession("9:00-12:00");
-        ticket2.setDate(LocalDate.now());
-        ticket2.setUser(user1);
+        ticket.setUser(user1);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session2);
         ticketService.save(ticket2);
 
         Ticket ticket3 = new Ticket();
-        ticket3.setFilm("Interstellar");
-        ticket3.setCinema("Mall of İstanbul");
-        ticket3.setSalon("1");
-        ticket3.setSession("12:00-15:00");
-        ticket3.setDate(LocalDate.now());
-        ticket3.setUser(user2);
+        ticket.setUser(user1);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session1);
         ticketService.save(ticket3);
 
         Ticket ticket4 = new Ticket();
-        ticket4.setFilm("Dune");
-        ticket4.setCinema("Erasta AVM");
-        ticket4.setSalon("3");
-        ticket4.setSession("12:00-15:00");
-        ticket4.setDate(LocalDate.now());
-        ticket4.setUser(user2);
+        ticket.setUser(user2);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session);
         ticketService.save(ticket4);
 
         Ticket ticket5 = new Ticket();
-        ticket5.setFilm("Dune");
-        ticket5.setCinema("Erasta İzmir AVM");
-        ticket5.setSalon("4");
-        ticket5.setSession("18:00-21:00");
-        ticket5.setDate(LocalDate.now());
-        ticket5.setUser(user2);
+        ticket.setUser(user2);
+        ticket.setDate(LocalDate.now());
+        ticket.setSession(session1);
         ticketService.save(ticket5);
     }
 }

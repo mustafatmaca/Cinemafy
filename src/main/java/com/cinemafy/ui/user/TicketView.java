@@ -95,7 +95,7 @@ public class TicketView extends VerticalLayout {
         cbFilm.addValueChangeListener(e -> {
             List<String> sessionTime = new ArrayList<>();
             for (Session session : sessions) {
-                sessionTime.add(session.getTime());
+                sessionTime.add(session.getStartTime().toString());
             }
             cbSession.setItems(sessionTime);
         });
@@ -109,7 +109,7 @@ public class TicketView extends VerticalLayout {
 
             List<String> sessionTime = new ArrayList<>();
             for (Session session : sessions) {
-                sessionTime.add(session.getTime());
+                sessionTime.add(session.getStartTime().toString());
             }
             cbSession.setItems(sessionTime);
 
@@ -124,64 +124,6 @@ public class TicketView extends VerticalLayout {
         //setValue to cbSession, if salon selected
         cbSalon.addValueChangeListener(e -> {
             List<String> sessionTime = new ArrayList<>();
-            for (Session session : sessions) {
-                if (cbFilm.getValue().equals("Dune")){
-                    if (e.getValue().equals("1") && session.getTime().equals("9:00-12:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("3") && session.getTime().equals("12:00-15:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("2") && session.getTime().equals("15:00-18:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("4") && session.getTime().equals("18:00-21:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                }
-                else if (cbFilm.getValue().equals("Interstellar")){
-                    if (e.getValue().equals("1") && session.getTime().equals("12:00-15:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("3") && session.getTime().equals("9:00-12:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("2") && session.getTime().equals("18:00-21:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("4") && session.getTime().equals("15:00-18:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                }
-                else if (cbFilm.getValue().equals("Lord Of The Rings: Two Tower")){
-                    if (e.getValue().equals("1") && session.getTime().equals("15:00-18:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("3") && session.getTime().equals("18:00-21:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("2") && session.getTime().equals("9:00-12:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("4") && session.getTime().equals("12:00-15:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                }
-                else if (cbFilm.getValue().equals("Eternals")){
-                    if (e.getValue().equals("1") && session.getTime().equals("18:00-21:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("3") && session.getTime().equals("15:00-18:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("2") && session.getTime().equals("12:00-15:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                    else if (e.getValue().equals("4") && session.getTime().equals("9:00-12:00")){
-                        sessionTime.add(session.getTime());
-                    }
-                }
-            }
             cbSession.setItems(sessionTime);
         });
 
@@ -206,10 +148,6 @@ public class TicketView extends VerticalLayout {
         btBuy.addClickListener(e -> {
             if (!cbFilm.getValue().isEmpty() && !cbCinema.getValue().isEmpty() && !cbSalon.getValue().isEmpty() && !cbSession.getValue().isEmpty() && !valueDatePicker.isEmpty()){
                 Ticket ticket = new Ticket();
-                ticket.setFilm(cbFilm.getValue());
-                ticket.setCinema(cbCinema.getValue());
-                ticket.setSalon(cbSalon.getValue());
-                ticket.setSession(cbSession.getValue());
                 ticket.setDate(valueDatePicker.getValue());
                 userService.save(finalUser);
                 ticket.setUser(finalUser);

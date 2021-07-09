@@ -3,6 +3,8 @@ package com.cinemafy.backend.services;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.backend.models.Film;
+import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.models.Session;
 import com.cinemafy.backend.repositories.SessionRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,16 @@ public class SessionServiceImpl implements SessionService{
     public List<Session> findAll() {
         return StreamSupport.stream(sessionRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Session> findByFilm(Film film) {
+        return sessionRepository.findByFilm_Id(film.getId());
+    }
+
+    @Override
+    public List<Session> findBySalon(Salon salon) {
+        return sessionRepository.findBySalon_Id(salon.getId());
     }
 
     @Override

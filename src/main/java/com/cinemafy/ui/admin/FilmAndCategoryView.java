@@ -2,8 +2,12 @@ package com.cinemafy.ui.admin;
 
 import com.cinemafy.backend.models.Category;
 import com.cinemafy.backend.models.Film;
+import com.cinemafy.backend.models.Session;
+import com.cinemafy.backend.models.Ticket;
 import com.cinemafy.backend.services.CategoryService;
 import com.cinemafy.backend.services.FilmService;
+import com.cinemafy.backend.services.SessionService;
+import com.cinemafy.backend.services.TicketService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -18,6 +22,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.converter.StringToLongConverter;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
@@ -28,6 +33,8 @@ public class FilmAndCategoryView extends VerticalLayout {
 
     private final FilmService filmService;
     private final CategoryService categoryService;
+    private final SessionService sessionService;
+    private final TicketService ticketService;
     private Grid<Film> filmGrid = new Grid<>(Film.class);
     private Grid<Category> categoryGrid = new Grid<>(Category.class);
     Dialog dialogFilm = new Dialog();
@@ -36,9 +43,11 @@ public class FilmAndCategoryView extends VerticalLayout {
     Binder<Category> categoryBinder = new Binder<>();
     Long itemId = 0L;
 
-    public FilmAndCategoryView(FilmService filmService, CategoryService categoryService) {
+    public FilmAndCategoryView(FilmService filmService, CategoryService categoryService, SessionService sessionService, TicketService ticketService) {
         this.filmService = filmService;
         this.categoryService = categoryService;
+        this.sessionService = sessionService;
+        this.ticketService = ticketService;
         H1 film = new H1("Films");
         H1 category = new H1("Categories");
 
@@ -68,7 +77,7 @@ public class FilmAndCategoryView extends VerticalLayout {
     private void configureFilmDialog(Dialog dialog) {
         dialog.setModal(true);
         TextField tfName = new TextField("Name");
-        TextField tfRuntime = new TextField("Runtime(ex. '2h30m')");
+        TextField tfRuntime = new TextField("Runtime(ex. '120')");
         TextField tfSrc = new TextField("Image Link");
         ComboBox<Category> cbCategory = new ComboBox("Category");
         List<Category> categories = categoryService.findAll();
@@ -77,7 +86,7 @@ public class FilmAndCategoryView extends VerticalLayout {
         cbCategory.setItemLabelGenerator(Category::getGenre);
 
         filmBinder.bind(tfName,Film::getName,Film::setName);
-        filmBinder.bind(tfRuntime,Film::getRuntime,Film::setRuntime);
+        filmBinder.forField(tfRuntime).withConverter(new StringToLongConverter("Must enter minute")).bind(Film::getRuntime,Film::setRuntime);
         filmBinder.bind(tfSrc,Film::getSrc,Film::setSrc);
         filmBinder.bind(cbCategory,Film::getCategory,Film::setCategory);
 
@@ -178,6 +187,14 @@ public class FilmAndCategoryView extends VerticalLayout {
         btnDelete.addClickListener(buttonClickEvent -> {
             ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
+                List<Session> sessions = sessionService.findByFilm(item);
+                for (Session session:sessions) {
+                    List<Ticket> tickets = ticketService.findBySession(session);
+                    for (Ticket ticket:tickets){
+                        ticketService.delete(ticket);
+                    }
+                    sessionService.delete(session);
+                }
                 filmService.delete(item);
                 updateList();
             },

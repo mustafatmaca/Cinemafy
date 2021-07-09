@@ -1,8 +1,15 @@
 package com.cinemafy.ui.admin;
 
+import com.cinemafy.backend.models.Cinema;
+import com.cinemafy.backend.models.Film;
+import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.models.Session;
+import com.cinemafy.backend.services.CinemaService;
+import com.cinemafy.backend.services.FilmService;
+import com.cinemafy.backend.services.SalonService;
 import com.cinemafy.backend.services.SessionService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -11,22 +18,30 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
+
+import java.util.List;
 
 @Route(value = "session", layout = AdminView.class)
 public class SessionView extends VerticalLayout {
 
     private final SessionService sessionService;
+    private final CinemaService cinemaService;
+    private final SalonService salonService;
+    private final FilmService filmService;
     private Grid<Session> sessionGrid = new Grid<>(Session.class);;
     Dialog dialogSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
     Long itemId = 0L;
 
-    public SessionView(SessionService sessionService) {
+    public SessionView(SessionService sessionService, CinemaService cinemaService, SalonService salonService, FilmService filmService) {
         this.sessionService = sessionService;
+        this.cinemaService = cinemaService;
+        this.salonService = salonService;
+        this.filmService = filmService;
         H1 session = new H1("Session");
 
         configureSessionDialog(dialogSession);
@@ -47,12 +62,25 @@ public class SessionView extends VerticalLayout {
 
     private void configureSessionDialog(Dialog dialog) {
         dialog.setModal(true);
-        TextField tfTime = new TextField("Time");
+        ComboBox<Film> cbFilm = new ComboBox("Film");
+        ComboBox<Salon> cbSalon = new ComboBox("Salon");
+        TimePicker tpStart = new TimePicker("Start Time");
+        TimePicker tpEnd = new TimePicker("End Time");tpEnd.isReadOnly();
 
-        sessionBinder.bind(tfTime,Session::getTime,Session::setTime);
+        List<Film> films = filmService.findAll();
+        List<Cinema> cinemas = cinemaService.findAll();
+        List<Salon> salons = salonService.findAll();
+
+        cbFilm.setItems(films);cbFilm.setItemLabelGenerator(Film::getName);
+        cbSalon.setItems(salons);cbSalon.setItemLabelGenerator(Salon::getNumber);
+
+        sessionBinder.bind(cbFilm,Session::getFilm,Session::setFilm);
+        sessionBinder.bind(cbSalon,Session::getSalon,Session::setSalon);
+        sessionBinder.bind(tpStart,Session::getStartTime,Session::setStartTime);
+        sessionBinder.bind(tpEnd,Session::getEndTime,Session::setEndTime);
 
         FormLayout formLayout = new FormLayout();
-        formLayout.add(tfTime);
+        formLayout.add(cbFilm,cbSalon,tpStart,tpEnd);
 
         HorizontalLayout horizontalLayout=new HorizontalLayout();
         horizontalLayout.setSpacing(true);
@@ -89,7 +117,7 @@ public class SessionView extends VerticalLayout {
 
     private void configureGrid() {
         sessionGrid.addClassName("session-grid");
-        sessionGrid.setColumns("time");
+        sessionGrid.setColumns("film.name", "salon.cinema.name", "salon.number", "startTime", "endTime");
         sessionGrid.addComponentColumn(item -> createSessionButton(sessionGrid, item)).setHeader("Actions");
     }
 

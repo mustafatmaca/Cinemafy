@@ -32,10 +32,10 @@ public class StatisticView extends VerticalLayout {
         List<String> ticketSessions = new ArrayList<>();
 
         for (Ticket ticket : tickets) {
-            ticketFilms.add(ticket.getFilm());
-            ticketCinemas.add(ticket.getCinema());
-            ticketSalons.add(ticket.getSalon());
-            ticketSessions.add(ticket.getSession());
+            //ticketFilms.add(ticket.getFilm());
+            //ticketCinemas.add(ticket.getCinema());
+            //ticketSalons.add(ticket.getSalon());
+            //ticketSessions.add(ticket.getSession());
         }
 
         List<Map.Entry<String, Long>> films = sortList(turnMap(ticketFilms));
@@ -81,18 +81,18 @@ public class StatisticView extends VerticalLayout {
         VerticalLayout title = new VerticalLayout(h1);
         title.setAlignItems(Alignment.START);
 
-        VerticalLayout verticalLayout = new VerticalLayout(new HorizontalLayout(h2Film, h2Cinema),
-                new HorizontalLayout(lblFilm1, lblCinema1),
-                new HorizontalLayout(lblFilm2, lblCinema2),
-                new HorizontalLayout(lblFilm3, lblCinema3)
+        VerticalLayout verticalLayout = new VerticalLayout(new HorizontalLayout(h2Film, h2Cinema)
+                //new HorizontalLayout(lblFilm1, lblCinema1),
+                //new HorizontalLayout(lblFilm2, lblCinema2),
+                //new HorizontalLayout(lblFilm3, lblCinema3)
         );
         verticalLayout.setAlignItems(Alignment.BASELINE);
         setSpacing(true);
 
-        VerticalLayout verticalLayout1 = new VerticalLayout(new HorizontalLayout(h2Salon, h2Session),
-                new HorizontalLayout(lblSalon1, lblSession1),
-                new HorizontalLayout(lblSalon2, lblSession2),
-                new HorizontalLayout(lblSalon3, lblSession3)
+        VerticalLayout verticalLayout1 = new VerticalLayout(new HorizontalLayout(h2Salon, h2Session)
+                //new HorizontalLayout(lblSalon1, lblSession1),
+                //new HorizontalLayout(lblSalon2, lblSession2),
+                //new HorizontalLayout(lblSalon3, lblSession3)
         );
         verticalLayout1.setAlignItems(Alignment.BASELINE);
         verticalLayout1.setSpacing(true);

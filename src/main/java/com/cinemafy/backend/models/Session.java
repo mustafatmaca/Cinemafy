@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -17,5 +18,12 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String time;
+    private LocalTime startTime;
+    private LocalTime endTime;
+
+    @ManyToOne
+    private Salon salon;
+
+    @ManyToOne
+    private Film film;
 }

@@ -3,6 +3,7 @@ package com.cinemafy.backend.services;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.backend.models.Session;
 import com.cinemafy.backend.models.Ticket;
 import com.cinemafy.backend.models.User;
 import com.cinemafy.backend.repositories.TicketRepository;
@@ -30,6 +31,11 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public List<Ticket> findByUserId(User user) {
         return ticketRepository.findTicketByUser(user);
+    }
+
+    @Override
+    public List<Ticket> findBySession(Session session) {
+        return ticketRepository.findBySession_Id(session.getId());
     }
 
     @Override

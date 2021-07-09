@@ -18,11 +18,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String film;
-    private String cinema;
-    private String salon;
-    private String session;
     private LocalDate date;
+
+    @ManyToOne
+    private Session session;
 
     @ManyToOne
     private User user;

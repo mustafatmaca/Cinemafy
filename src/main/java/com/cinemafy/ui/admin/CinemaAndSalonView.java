@@ -2,8 +2,12 @@ package com.cinemafy.ui.admin;
 
 import com.cinemafy.backend.models.Cinema;
 import com.cinemafy.backend.models.Salon;
+import com.cinemafy.backend.models.Session;
+import com.cinemafy.backend.models.Ticket;
 import com.cinemafy.backend.services.CinemaService;
 import com.cinemafy.backend.services.SalonService;
+import com.cinemafy.backend.services.SessionService;
+import com.cinemafy.backend.services.TicketService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -26,6 +30,8 @@ public class CinemaAndSalonView extends VerticalLayout {
 
     private final CinemaService cinemaService;
     private final SalonService salonService;
+    private final SessionService sessionService;
+    private final TicketService ticketService;
     private Grid<Cinema> cinemaGrid = new Grid<>(Cinema.class);
     private Grid<Salon> salonGrid = new Grid<>(Salon.class);
     Dialog dialogCinema = new Dialog();
@@ -34,9 +40,11 @@ public class CinemaAndSalonView extends VerticalLayout {
     Binder<Salon> salonBinder = new Binder<>();
     Long itemId = 0L;
 
-    public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService) {
+    public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) {
         this.cinemaService = cinemaService;
         this.salonService = salonService;
+        this.sessionService = sessionService;
+        this.ticketService = ticketService;
         H1 cinema = new H1("Cinemas");
         H1 salon = new H1("Salons");
 
@@ -173,6 +181,14 @@ public class CinemaAndSalonView extends VerticalLayout {
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
                 List<Salon> salons = salonService.findByCinema(item);
                 for (Salon salon:salons) {
+                    List<Session> sessions = sessionService.findBySalon(salon);
+                    for (Session session:sessions) {
+                        List<Ticket> tickets = ticketService.findBySession(session);
+                        for (Ticket ticket:tickets){
+                            ticketService.delete(ticket);
+                        }
+                        sessionService.delete(session);
+                    }
                     salonService.delete(salon);
                 }
                 cinemaService.delete(item);
@@ -202,6 +218,14 @@ public class CinemaAndSalonView extends VerticalLayout {
         btnDelete.addClickListener(buttonClickEvent -> {
             ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
+                List<Session> sessions = sessionService.findBySalon(item);
+                for (Session session:sessions) {
+                    List<Ticket> tickets = ticketService.findBySession(session);
+                    for (Ticket ticket:tickets){
+                        ticketService.delete(ticket);
+                    }
+                    sessionService.delete(session);
+                }
                 salonService.delete(item);
                 updateList();
             },

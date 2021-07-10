@@ -42,8 +42,8 @@ public class MovieView extends VerticalLayout {
         for (Film film : films) {
             H3 ctgHead = new H3("Category");
             Label ctg = new Label(film.getCategory().getGenre());
-            H3 rntmHead = new H3("Runtime");
-            Label rntm = new Label(String.valueOf(film.getMinute()));
+            H3 minHead = new H3("Minute");
+            Label min = new Label(String.valueOf(film.getMinute()));
             Button ticket = new Button("Ticket");
             ticket.setWidth("200px");
             ticket.addClickListener(e -> {
@@ -51,8 +51,9 @@ public class MovieView extends VerticalLayout {
                 UI.getCurrent().getPage().setLocation("/ticket");
             });
             FormLayout filmForm = new FormLayout();
-            filmForm.add(new HorizontalLayout(new VerticalLayout(ctgHead,ctg), new VerticalLayout(rntmHead,rntm), new VerticalLayout(ticket)));
+            filmForm.add(new HorizontalLayout(new VerticalLayout(ctgHead,ctg), new VerticalLayout(minHead,min), new VerticalLayout(ticket)));
             Details details = new Details(film.getName(), filmForm);
+            details.setOpened(true);
             details.addThemeVariants(DetailsVariant.REVERSE, DetailsVariant.FILLED);
             String src = film.getSrc();
             Image img = new Image(src, film.getName());

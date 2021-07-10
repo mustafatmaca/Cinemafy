@@ -15,7 +15,7 @@ public interface UserService {
 
     Long count();
 
-    User login(String email, String password);
+    User login(String email, String password, String loginType);
 
     void delete(User user);
 

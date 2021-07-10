@@ -33,7 +33,7 @@ public class LoginView extends VerticalLayout {
         loginForm.setI18n(createI18n());
 
         loginForm.addLoginListener(e -> {
-            User result = userService.login(e.getUsername(),e.getPassword());
+            User result = userService.login(e.getUsername(),e.getPassword(),VaadinSession.getCurrent().getSession().getAttribute("LoginType").toString());
 
             if (result.getId()!=null)
             {

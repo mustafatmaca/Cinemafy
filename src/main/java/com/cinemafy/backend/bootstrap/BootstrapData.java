@@ -286,6 +286,7 @@ public class BootstrapData implements CommandLineRunner {
         user.setLastName("Atmaca");
         user.setEmail("mustafaatmaca362@gmail.com");
         user.setPassword("123456");
+        user.setUserType("User");
         userService.save(user);
 
         User user1 = new User();
@@ -293,6 +294,7 @@ public class BootstrapData implements CommandLineRunner {
         user1.setLastName("user");
         user1.setEmail("user");
         user1.setPassword("password");
+        user1.setUserType("User");
         userService.save(user1);
 
         User user2 = new User();
@@ -300,8 +302,16 @@ public class BootstrapData implements CommandLineRunner {
         user2.setLastName("World");
         user2.setEmail("hello");
         user2.setPassword("world");
+        user2.setUserType("User");
         userService.save(user2);
 
+        User user3 = new User();
+        user3.setFirstName("admin");
+        user3.setLastName("admin");
+        user3.setEmail("admin");
+        user3.setPassword("admin");
+        user3.setUserType("Admin");
+        userService.save(user3);
 
         //TICKET
         Ticket ticket = new Ticket();

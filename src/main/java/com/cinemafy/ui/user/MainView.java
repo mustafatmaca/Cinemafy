@@ -3,6 +3,7 @@ package com.cinemafy.ui.user;
  * @author Mustafa Atmaca
  */
 
+import com.cinemafy.ui.LoginTypeView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -44,12 +45,14 @@ public class MainView extends AppLayout implements AppShellConfigurator {
 
         Tab about = createMenuItem("About", VaadinIcon.ARCHIVE, AboutView.class);
 
+        Tab logout = createMenuItem("Logout", VaadinIcon.EXIT, LoginTypeView.class);
 
-        for (Tab tab : new Tab[] { home, movies, tickets, statistics, about }) {
+
+        for (Tab tab : new Tab[] { home, movies, tickets, statistics, about, logout }) {
             tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
         }
 
-        Tabs tabs = new Tabs(home, movies, tickets, statistics, about);
+        Tabs tabs = new Tabs(home, movies, tickets, statistics, about, logout);
         addToNavbar(title, tabs);
     }
 

@@ -13,10 +13,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 
 @Route("/register")
 public class RegisterView extends VerticalLayout {
     private final UserService userService;
+    String userType;
 
     public RegisterView(UserService userService) {
         this.userService = userService;
@@ -31,7 +33,7 @@ public class RegisterView extends VerticalLayout {
 
         button.addClickListener(event -> {
             if (!firstNameField.getValue().isEmpty() && !lastNameField.getValue().isEmpty() && !emailField.getValue().isEmpty() && !passwordField.getValue().isEmpty()){
-                register(firstNameField.getValue(), lastNameField.getValue(), emailField.getValue(), passwordField.getValue());
+                register(firstNameField.getValue(), lastNameField.getValue(), emailField.getValue(), passwordField.getValue(), VaadinSession.getCurrent().getSession().getAttribute("LoginType").toString());
                 UI.getCurrent().getPage().setLocation("/login");
             }
             else {
@@ -48,12 +50,13 @@ public class RegisterView extends VerticalLayout {
         add(title, firstNameField, lastNameField, emailField, passwordField, button);
     }
 
-    private void register(String fn, String ln, String mail, String pw) {
+    private void register(String fn, String ln, String mail, String pw, String userType) {
         User user = new User();
         user.setFirstName(fn);
         user.setLastName(ln);
         user.setEmail(mail);
         user.setPassword(pw);
+        user.setUserType(userType);
         userService.save(user);
     }
 }

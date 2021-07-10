@@ -1,5 +1,6 @@
 package com.cinemafy.ui.admin;
 
+import com.cinemafy.ui.LoginTypeView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.Text;
@@ -129,6 +130,8 @@ public class AdminView extends AppLayout {
                 new MenuItemInfo("Film", "la la-file", FilmAndCategoryView.class), //
 
                 new MenuItemInfo("Session", "la la-file", SessionView.class), //
+
+                new MenuItemInfo("Logout", "la la-exit", LoginTypeView.class),
 
         };
         List<Tab> tabs = new ArrayList<>();

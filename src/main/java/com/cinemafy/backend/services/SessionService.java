@@ -16,6 +16,8 @@ public interface SessionService {
 
     List<Session> findBySalon(Salon salon);
 
+    List<Session> findBySalonAndFilm(Salon salon, Film film);
+
     Long count();
 
     void delete(Session session);

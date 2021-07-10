@@ -34,6 +34,16 @@ public class FilmServiceImpl implements FilmService{
     }
 
     @Override
+    public Film findByName(String name) {
+        List<Film> result =  filmRepository.findByName(name);
+        if (result.size()==0){
+            return new Film();
+        }
+
+        return result.get(0);
+    }
+
+    @Override
     public Long count() {
         return filmRepository.count();
     }

@@ -83,28 +83,28 @@ public class BootstrapData implements CommandLineRunner {
         //FILM
         Film interstellar = new Film();
         interstellar.setName("Interstellar");
-        interstellar.setRuntime(169);
+        interstellar.setMinute(169);
         interstellar.setSrc("https://tr.web.img3.acsta.net/r_1920_1080/img/08/fe/08feaecbc56c480c082003c632f3bc2f.jpg");
         interstellar.setCategory(scifi);
         filmService.save(interstellar);
 
         Film lotr = new Film();
         lotr.setName("Lord Of The Rings: Two Tower");
-        lotr.setRuntime(179);
+        lotr.setMinute(179);
         lotr.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/img/6f/b4/6fb4b6e04af5e72f61b265be07143748.jpg");
         lotr.setCategory(fantasy);
         filmService.save(lotr);
 
         Film dune = new Film();
         dune.setName("Dune");
-        dune.setRuntime(130);
+        dune.setMinute(130);
         dune.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/pictures/20/04/30/20/27/2963799.jpg");
         dune.setCategory(scifi);
         filmService.save(dune);
 
         Film eternals = new Film();
         eternals.setName("Eternals");
-        eternals.setRuntime(116);
+        eternals.setMinute(116);
         eternals.setSrc("https://tr.web.img4.acsta.net/r_1920_1080/pictures/21/05/25/10/14/2918182.jpg");
         eternals.setCategory(fantasy);
         filmService.save(eternals);
@@ -260,21 +260,21 @@ public class BootstrapData implements CommandLineRunner {
 
         Session session = new Session();
         session.setStartTime(LocalTime.of(9,0));
-        session.setEndTime(session.getStartTime().plus(Duration.ofMinutes(dune.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session.setEndTime(session.getStartTime().plus(Duration.ofMinutes(dune.getMinute())).truncatedTo(ChronoUnit.HOURS));
         session.setFilm(dune);
         session.setSalon(salon1);
         sessionService.save(session);
 
         Session session1 = new Session();
         session1.setStartTime(session.getEndTime());
-        session1.setEndTime(session1.getStartTime().plus(Duration.ofMinutes(interstellar.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session1.setEndTime(session1.getStartTime().plus(Duration.ofMinutes(interstellar.getMinute())).truncatedTo(ChronoUnit.HOURS));
         session1.setFilm(interstellar);
         session1.setSalon(salon1);
         sessionService.save(session1);
 
         Session session2 = new Session();
         session2.setStartTime(LocalTime.of(9,0));
-        session2.setEndTime(session2.getStartTime().plus(Duration.ofMinutes(eternals.getRuntime())).truncatedTo(ChronoUnit.HOURS));
+        session2.setEndTime(session2.getStartTime().plus(Duration.ofMinutes(eternals.getMinute())).truncatedTo(ChronoUnit.HOURS));
         session2.setFilm(eternals);
         session2.setSalon(sln1);
         sessionService.save(session2);
@@ -311,33 +311,33 @@ public class BootstrapData implements CommandLineRunner {
         ticketService.save(ticket);
 
         Ticket ticket1 = new Ticket();
-        ticket.setUser(user);
-        ticket.setDate(LocalDate.now());
-        ticket.setSession(session1);
+        ticket1.setUser(user);
+        ticket1.setDate(LocalDate.now());
+        ticket1.setSession(session1);
         ticketService.save(ticket1);
 
         Ticket ticket2 = new Ticket();
-        ticket.setUser(user1);
-        ticket.setDate(LocalDate.now());
-        ticket.setSession(session2);
+        ticket2.setUser(user1);
+        ticket2.setDate(LocalDate.now());
+        ticket2.setSession(session2);
         ticketService.save(ticket2);
 
         Ticket ticket3 = new Ticket();
-        ticket.setUser(user1);
-        ticket.setDate(LocalDate.now());
-        ticket.setSession(session1);
+        ticket3.setUser(user1);
+        ticket3.setDate(LocalDate.now());
+        ticket3.setSession(session1);
         ticketService.save(ticket3);
 
         Ticket ticket4 = new Ticket();
-        ticket.setUser(user2);
-        ticket.setDate(LocalDate.now());
-        ticket.setSession(session);
+        ticket4.setUser(user2);
+        ticket4.setDate(LocalDate.now());
+        ticket4.setSession(session);
         ticketService.save(ticket4);
 
         Ticket ticket5 = new Ticket();
-        ticket.setUser(user2);
-        ticket.setDate(LocalDate.now());
-        ticket.setSession(session1);
+        ticket5.setUser(user2);
+        ticket5.setDate(LocalDate.now());
+        ticket5.setSession(session1);
         ticketService.save(ticket5);
     }
 }

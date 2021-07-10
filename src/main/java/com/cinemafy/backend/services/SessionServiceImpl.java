@@ -40,6 +40,11 @@ public class SessionServiceImpl implements SessionService{
     }
 
     @Override
+    public List<Session> findBySalonAndFilm(Salon salon, Film film) {
+        return sessionRepository.findBySalon_IdAndFilm_Id(salon.getId(), film.getId());
+    }
+
+    @Override
     public Long count() {
         return sessionRepository.count();
     }

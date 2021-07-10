@@ -89,6 +89,7 @@ public class AdminView extends AppLayout {
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.add(new DrawerToggle());
         viewTitle = new H2("Cinemafy");
+        viewTitle.setHeight("80px");
         layout.add(viewTitle);
 
         return layout;

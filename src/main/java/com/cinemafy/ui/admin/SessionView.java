@@ -1,13 +1,7 @@
 package com.cinemafy.ui.admin;
 
-import com.cinemafy.backend.models.Cinema;
-import com.cinemafy.backend.models.Film;
-import com.cinemafy.backend.models.Salon;
-import com.cinemafy.backend.models.Session;
-import com.cinemafy.backend.services.CinemaService;
-import com.cinemafy.backend.services.FilmService;
-import com.cinemafy.backend.services.SalonService;
-import com.cinemafy.backend.services.SessionService;
+import com.cinemafy.backend.models.*;
+import com.cinemafy.backend.services.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -32,16 +26,18 @@ public class SessionView extends VerticalLayout {
     private final CinemaService cinemaService;
     private final SalonService salonService;
     private final FilmService filmService;
+    private final TicketService ticketService;
     private Grid<Session> sessionGrid = new Grid<>(Session.class);;
     Dialog dialogSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
     Long itemId = 0L;
 
-    public SessionView(SessionService sessionService, CinemaService cinemaService, SalonService salonService, FilmService filmService) {
+    public SessionView(SessionService sessionService, CinemaService cinemaService, SalonService salonService, FilmService filmService, TicketService ticketService) {
         this.sessionService = sessionService;
         this.cinemaService = cinemaService;
         this.salonService = salonService;
         this.filmService = filmService;
+        this.ticketService = ticketService;
         H1 session = new H1("Session");
 
         configureSessionDialog(dialogSession);
@@ -127,6 +123,10 @@ public class SessionView extends VerticalLayout {
         btnDelete.addClickListener(buttonClickEvent -> {
             ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
+                List<Ticket> tickets = ticketService.findBySession(item);
+                for (Ticket ticket:tickets){
+                    ticketService.delete(ticket);
+                }
                 sessionService.delete(item);
                 updateList();
             },

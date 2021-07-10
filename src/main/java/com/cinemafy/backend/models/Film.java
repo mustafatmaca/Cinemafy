@@ -18,7 +18,7 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private long runtime;
+    private long minute;
     private String src;
 
     @ManyToOne

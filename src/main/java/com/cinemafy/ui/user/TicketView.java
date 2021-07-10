@@ -18,7 +18,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "ticket", layout = MainView.class)
@@ -31,6 +30,8 @@ public class TicketView extends VerticalLayout {
     private final SessionService sessionService;
     private final TicketService ticketService;
     private Grid<Ticket> ticketGrid = new Grid<>(Ticket.class);
+    Film ticketFilm;
+    User user;
 
     public TicketView(UserService userService, FilmService filmService, CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) {
         this.userService = userService;
@@ -39,8 +40,6 @@ public class TicketView extends VerticalLayout {
         this.salonService = salonService;
         this.sessionService = sessionService;
         this.ticketService = ticketService;
-        String ticketFilm = new String();
-        User user = new User();
 
         setWidth("%100");
         setHeight("%100");
@@ -49,7 +48,7 @@ public class TicketView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         if (VaadinSession.getCurrent().getSession().getAttribute("TicketFilm") != null){
-            ticketFilm = VaadinSession.getCurrent().getSession().getAttribute("TicketFilm").toString();
+            ticketFilm = filmService.findByName(VaadinSession.getCurrent().getSession().getAttribute("TicketFilm").toString());
         }
 
         if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId") != null){
@@ -59,72 +58,38 @@ public class TicketView extends VerticalLayout {
         //COMBOBOX
         List<Film> films = filmService.findAll();
         List<Cinema> cinemas = cinemaService.findAll();
-        List<Salon> salons = salonService.findAll();
-        List<Session> sessions = sessionService.findAll();
 
-        ComboBox<String> cbFilm = new ComboBox<>();
-        cbFilm.setLabel("Film");
+        ComboBox<Film> cbFilm = new ComboBox<>("Film");
         cbFilm.setWidth("400px");
-        ComboBox<String> cbCinema = new ComboBox<>();
-        cbCinema.setLabel("Cinema");
+        cbFilm.setItems(films);
+        cbFilm.setItemLabelGenerator(Film::getName);
+        ComboBox<Cinema> cbCinema = new ComboBox<>("Cinema");
         cbCinema.setWidth("400px");
-        ComboBox<String> cbSalon = new ComboBox<>();
-        cbSalon.setLabel("Salon");
+        cbCinema.setItems(cinemas);
+        cbCinema.setItemLabelGenerator(Cinema::getName);
+        ComboBox<Salon> cbSalon = new ComboBox<>("Salon");cbSalon.setEnabled(false);
         cbSalon.setWidth("400px");
-        ComboBox<String> cbSession = new ComboBox<>();
-        cbSession.setLabel("Session");
+        ComboBox<Session> cbSession = new ComboBox<>("Session");cbSession.setEnabled(false);
         cbSession.setWidth("400px");
 
         //setValue to cbFilm, film's names
-        List<String> filmName = new ArrayList<>();
-        for (Film film : films) {
-            filmName.add(film.getName());
-        }
-        cbFilm.setItems(filmName);
         cbFilm.setValue(ticketFilm);
         VaadinSession.getCurrent().getSession().setAttribute("TicketFilm", null);
 
-        //setValue to cbCinema, cinema's names
-        List<String> cinemaName = new ArrayList<>();
-        for (Cinema cinema : cinemas) {
-            cinemaName.add(cinema.getName());
-        }
-        cbCinema.setItems(cinemaName);
-
-        //setValue to cbSession, sessions if film selected
-        cbFilm.addValueChangeListener(e -> {
-            List<String> sessionTime = new ArrayList<>();
-            for (Session session : sessions) {
-                sessionTime.add(session.getStartTime().toString());
-            }
-            cbSession.setItems(sessionTime);
-        });
-
-        //setValue to cbSession and cbSalon, if cinema selected
-        cbSalon.setEnabled(false);
-        cbSession.setEnabled(false);
+        //setValue to cbSalon, if cinema selected
         cbCinema.addValueChangeListener(e -> {
             cbSalon.setEnabled(true);
-            cbSession.setEnabled(true);
-
-            List<String> sessionTime = new ArrayList<>();
-            for (Session session : sessions) {
-                sessionTime.add(session.getStartTime().toString());
-            }
-            cbSession.setItems(sessionTime);
-
-            List<String> salonNumber = new ArrayList<>();
-            for (Salon salon : salons) {
-                if (salon.getCinema().getName() == e.getValue())
-                    salonNumber.add(salon.getNumber());
-            }
+            List<Salon> salonNumber = salonService.findByCinema(e.getValue());
             cbSalon.setItems(salonNumber);
+            cbSalon.setItemLabelGenerator(salon -> salon.getNumber());
         });
 
         //setValue to cbSession, if salon selected
         cbSalon.addValueChangeListener(e -> {
-            List<String> sessionTime = new ArrayList<>();
-            cbSession.setItems(sessionTime);
+            cbSession.setEnabled(true);
+            List<Session> sessions = sessionService.findBySalonAndFilm(e.getValue(), cbFilm.getValue());
+            cbSession.setItems(sessions);
+            cbSession.setItemLabelGenerator(session -> session.getStartTime().toString());
         });
 
         //HEADER
@@ -146,9 +111,10 @@ public class TicketView extends VerticalLayout {
         btBuy.setWidth("200px");
         User finalUser = user;
         btBuy.addClickListener(e -> {
-            if (!cbFilm.getValue().isEmpty() && !cbCinema.getValue().isEmpty() && !cbSalon.getValue().isEmpty() && !cbSession.getValue().isEmpty() && !valueDatePicker.isEmpty()){
+            if (!cbFilm.getValue().toString().isEmpty() && !cbCinema.getValue().toString().isEmpty() && !cbSalon.getValue().toString().isEmpty() && !cbSession.getValue().toString().isEmpty() && !valueDatePicker.isEmpty()){
                 Ticket ticket = new Ticket();
                 ticket.setDate(valueDatePicker.getValue());
+                ticket.setSession(cbSession.getValue());
                 userService.save(finalUser);
                 ticket.setUser(finalUser);
                 ticketService.save(ticket);
@@ -182,7 +148,7 @@ public class TicketView extends VerticalLayout {
 
     private void configureGrid() {
         ticketGrid.addClassName("ticket-grid");
-        ticketGrid.setColumns("film", "cinema", "salon", "session", "date");
+        ticketGrid.setColumns("session.film.name", "session.salon.cinema.name", "session.salon.number", "session.startTime", "session.endTime", "date");
         ticketGrid.addComponentColumn(item -> createDeleteButton(ticketGrid, item)).setHeader("Actions");
     }
 

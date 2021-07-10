@@ -6,7 +6,7 @@ package com.cinemafy.ui.user;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.tabs.Tab;
@@ -31,8 +31,8 @@ public class MainView extends AppLayout implements AppShellConfigurator {
             }
         }
 
-        String src = "https://mpng.subpng.com/20180621/ewt/kisspng-film-cinema-logo-photography-5b2c14e50ae561.8080959915296155890446.jpg";
-        Image img = new Image(src, "Cinemafy");
+        H2 title = new H2("Cinemafy");
+        title.setHeight("80px");
 
         Tab home = createMenuItem("Home", VaadinIcon.HOME, HomeView.class);
 
@@ -50,8 +50,7 @@ public class MainView extends AppLayout implements AppShellConfigurator {
         }
 
         Tabs tabs = new Tabs(home, movies, tickets, statistics, about);
-        img.setHeight("44px");
-        addToNavbar(img, tabs);
+        addToNavbar(title, tabs);
     }
 
     private Tab createMenuItem(String title, VaadinIcon icon, Class<? extends Component> target) {

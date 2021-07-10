@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface FilmRepository extends CrudRepository<Film, Long>, JpaRepository<Film, Long> {
     List<Film> findByCategory_Id(Long id);
+    List<Film> findByName(String name);
 }

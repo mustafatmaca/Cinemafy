@@ -77,7 +77,7 @@ public class FilmAndCategoryView extends VerticalLayout {
     private void configureFilmDialog(Dialog dialog) {
         dialog.setModal(true);
         TextField tfName = new TextField("Name");
-        TextField tfRuntime = new TextField("Runtime(ex. '120')");
+        TextField tfMinute = new TextField("Minute(ex. '120')");
         TextField tfSrc = new TextField("Image Link");
         ComboBox<Category> cbCategory = new ComboBox("Category");
         List<Category> categories = categoryService.findAll();
@@ -86,12 +86,12 @@ public class FilmAndCategoryView extends VerticalLayout {
         cbCategory.setItemLabelGenerator(Category::getGenre);
 
         filmBinder.bind(tfName,Film::getName,Film::setName);
-        filmBinder.forField(tfRuntime).withConverter(new StringToLongConverter("Must enter minute")).bind(Film::getRuntime,Film::setRuntime);
+        filmBinder.forField(tfMinute).withConverter(new StringToLongConverter("Must enter minute")).bind(Film::getMinute,Film::setMinute);
         filmBinder.bind(tfSrc,Film::getSrc,Film::setSrc);
         filmBinder.bind(cbCategory,Film::getCategory,Film::setCategory);
 
         FormLayout formLayout = new FormLayout();
-        formLayout.add(tfName,tfRuntime,tfSrc,cbCategory);
+        formLayout.add(tfName,tfMinute,tfSrc,cbCategory);
 
         HorizontalLayout horizontalLayout=new HorizontalLayout();
         horizontalLayout.setSpacing(true);
@@ -167,7 +167,7 @@ public class FilmAndCategoryView extends VerticalLayout {
 
     private void configureGrid() {
         filmGrid.addClassName("film-grid");
-        filmGrid.setColumns("name", "runtime", "category.genre");
+        filmGrid.setColumns("name", "minute", "category.genre");
         filmGrid.addComponentColumn(i -> {
             Image image = new Image(i.getSrc(), i.getName());
             image.setHeight("192px");
@@ -224,6 +224,14 @@ public class FilmAndCategoryView extends VerticalLayout {
                     "Are you sure you want to delete?", "Delete", confirmEvent -> {
                 List<Film> films = filmService.findByCategory(item);
                 for (Film film:films) {
+                    List<Session> sessions = sessionService.findByFilm(film);
+                    for (Session session:sessions) {
+                        List<Ticket> tickets = ticketService.findBySession(session);
+                        for (Ticket ticket:tickets){
+                            ticketService.delete(ticket);
+                        }
+                        sessionService.delete(session);
+                    }
                     filmService.delete(film);
                 }
                 categoryService.delete(item);

@@ -23,7 +23,11 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @Route(value = "cinema", layout = AdminView.class)
 public class CinemaAndSalonView extends VerticalLayout {
@@ -40,7 +44,7 @@ public class CinemaAndSalonView extends VerticalLayout {
     Binder<Salon> salonBinder = new Binder<>();
     Long itemId = 0L;
 
-    public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) {
+    public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) throws FileNotFoundException {
         this.cinemaService = cinemaService;
         this.salonService = salonService;
         this.sessionService = sessionService;
@@ -71,16 +75,26 @@ public class CinemaAndSalonView extends VerticalLayout {
         add(cinema, btnNewCinema, cinemaGrid, salon, btnNewSalon, salonGrid);
     }
 
-    private void configureCinemaDialog(Dialog dialog) {
+    private void configureCinemaDialog(Dialog dialog) throws FileNotFoundException {
         dialog.setModal(true);
         TextField tfName = new TextField("Name");
         TextField tfCity = new TextField("City");
+        ComboBox<String> cbCity = new ComboBox<>("City");
+
+        List<String> cities = new ArrayList<String>();
+        File file = new File("C:/Users/musta/Desktop/city.txt");
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()){
+            cities.add(scanner.nextLine());
+        }
+
+        cbCity.setItems(cities);
 
         cinemaBinder.bind(tfName,Cinema::getName,Cinema::setName);
-        cinemaBinder.bind(tfCity,Cinema::getCity,Cinema::setCity);
+        cinemaBinder.bind(cbCity,Cinema::getCity,Cinema::setCity);
 
         FormLayout formLayout = new FormLayout();
-        formLayout.add(tfName,tfCity);
+        formLayout.add(tfName,cbCity);
 
         HorizontalLayout horizontalLayout=new HorizontalLayout();
         horizontalLayout.setSpacing(true);

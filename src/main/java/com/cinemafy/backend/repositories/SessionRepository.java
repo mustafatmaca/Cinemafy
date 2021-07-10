@@ -12,4 +12,5 @@ import java.util.List;
 public interface SessionRepository extends CrudRepository<Session, Long>, JpaRepository<Session, Long> {
     List<Session> findByFilm_Id(Long id);
     List<Session> findBySalon_Id(Long id);
+    List<Session> findBySalon_IdAndFilm_Id(Long idSalon, Long idFilm);
 }

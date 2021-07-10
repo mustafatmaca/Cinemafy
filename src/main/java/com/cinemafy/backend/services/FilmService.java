@@ -13,6 +13,8 @@ public interface FilmService {
 
     List<Film> findByCategory(Category category);
 
+    Film findByName(String name);
+
     Long count();
 
     void delete(Film film);

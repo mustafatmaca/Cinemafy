@@ -28,7 +28,7 @@ public class SessionView extends VerticalLayout {
     private final FilmService filmService;
     private final TicketService ticketService;
     private Grid<Session> sessionGrid = new Grid<>(Session.class);;
-    Dialog dialogSession = new Dialog();
+    Dialog dialogUpdateSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
     Long itemId = 0L;
 
@@ -40,7 +40,7 @@ public class SessionView extends VerticalLayout {
         this.ticketService = ticketService;
         H1 session = new H1("Session");
 
-        configureSessionDialog(dialogSession);
+        configureSessionDialog(dialogUpdateSession);
 
         configureGrid();
         updateList();
@@ -49,7 +49,7 @@ public class SessionView extends VerticalLayout {
         btnNewSession.addClickListener(buttonClickEvent -> {
             itemId = 0L;
             sessionBinder.readBean(new Session());
-            dialogSession.open();
+            dialogUpdateSession.open();
         });
 
         add(session, btnNewSession, sessionGrid);
@@ -60,6 +60,7 @@ public class SessionView extends VerticalLayout {
         dialog.setModal(true);
         ComboBox<Film> cbFilm = new ComboBox("Film");
         ComboBox<Salon> cbSalon = new ComboBox("Salon");
+        ComboBox<Cinema> cbCinema = new ComboBox("Cinema");
         TimePicker tpStart = new TimePicker("Start Time");
         TimePicker tpEnd = new TimePicker("End Time");tpEnd.isReadOnly();
 
@@ -69,14 +70,26 @@ public class SessionView extends VerticalLayout {
 
         cbFilm.setItems(films);cbFilm.setItemLabelGenerator(Film::getName);
         cbSalon.setItems(salons);cbSalon.setItemLabelGenerator(Salon::getNumber);
+        cbCinema.setItems(cinemas);cbCinema.setItemLabelGenerator(Cinema::getName);
 
         sessionBinder.bind(cbFilm,Session::getFilm,Session::setFilm);
         sessionBinder.bind(cbSalon,Session::getSalon,Session::setSalon);
         sessionBinder.bind(tpStart,Session::getStartTime,Session::setStartTime);
         sessionBinder.bind(tpEnd,Session::getEndTime,Session::setEndTime);
 
+        if (cbSalon.getValue() != null){
+            cbCinema.setValue(cbSalon.getValue().getCinema());
+        }
+
+        cbCinema.addValueChangeListener(e -> {
+            cbSalon.setEnabled(true);
+            List<Salon> salonNumber = salonService.findByCinema(e.getValue());
+            cbSalon.setItems(salonNumber);
+            cbSalon.setItemLabelGenerator(salon -> salon.getNumber());
+        });
+
         FormLayout formLayout = new FormLayout();
-        formLayout.add(cbFilm,cbSalon,tpStart,tpEnd);
+        formLayout.add(cbFilm,cbCinema,cbSalon,tpStart,tpEnd);
 
         HorizontalLayout horizontalLayout=new HorizontalLayout();
         horizontalLayout.setSpacing(true);
@@ -85,6 +98,7 @@ public class SessionView extends VerticalLayout {
         Button btnCancel = new Button("Cancel");
         btnCancel.addClickListener(buttonClickEvent -> {
             dialog.close();
+            cbCinema.setValue(null);
         });
 
         btnSave.addClickListener(buttonClickEvent -> {
@@ -100,6 +114,7 @@ public class SessionView extends VerticalLayout {
             sessionService.save(session);
             updateList();
             dialog.close();
+            cbCinema.setValue(null);
         });
 
 
@@ -140,7 +155,7 @@ public class SessionView extends VerticalLayout {
         btnUpdate.addClickListener(buttonClickEvent -> {
             itemId = item.getId();
             sessionBinder.readBean(item);
-            dialogSession.open();
+            dialogUpdateSession.open();
         });
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(btnUpdate, btnDelete);

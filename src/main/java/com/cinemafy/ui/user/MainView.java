@@ -41,18 +41,18 @@ public class MainView extends AppLayout implements AppShellConfigurator {
 
         Tab tickets = createMenuItem("Tickets", VaadinIcon.TICKET, TicketView.class);
 
-        Tab statistics = createMenuItem("Statistics", VaadinIcon.ABACUS, StatisticView.class);
+        Tab trending = createMenuItem("Trending", VaadinIcon.TRENDING_UP, TrendingView.class);
 
         Tab about = createMenuItem("About", VaadinIcon.ARCHIVE, AboutView.class);
 
         Tab logout = createMenuItem("Logout", VaadinIcon.EXIT, LoginTypeView.class);
 
 
-        for (Tab tab : new Tab[] { home, movies, tickets, statistics, about, logout }) {
+        for (Tab tab : new Tab[] { home, movies, tickets, trending, about, logout }) {
             tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
         }
 
-        Tabs tabs = new Tabs(home, movies, tickets, statistics, about, logout);
+        Tabs tabs = new Tabs(home, movies, tickets, trending, about, logout);
         addToNavbar(title, tabs);
     }
 

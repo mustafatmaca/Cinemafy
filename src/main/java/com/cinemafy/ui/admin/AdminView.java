@@ -125,11 +125,13 @@ public class AdminView extends AppLayout {
 
     private List<Tab> createMenuItems() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
-                new MenuItemInfo("Cinema", "la la-globe", CinemaAndSalonView.class), //
+                new MenuItemInfo("Cinema and Salon", "la la-globe", CinemaAndSalonView.class), //
 
-                new MenuItemInfo("Film", "la la-file", FilmAndCategoryView.class), //
+                new MenuItemInfo("Film and Category", "la la-file", FilmAndCategoryView.class), //
 
                 new MenuItemInfo("Session", "la la-file", SessionView.class), //
+
+                new MenuItemInfo("Statistics", "la la-file", StatisticsView.class),
 
                 new MenuItemInfo("Logout", "la la-exit", LoginTypeView.class),
 

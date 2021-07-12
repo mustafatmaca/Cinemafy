@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Route(value = "statistic", layout = MainView.class)
-public class StatisticView extends VerticalLayout {
+@Route(value = "trending", layout = MainView.class)
+public class TrendingView extends VerticalLayout {
 
     private final TicketService ticketService;
 
-    public StatisticView(TicketService ticketService) {
+    public TrendingView(TicketService ticketService) {
         this.ticketService = ticketService;
 
         List<Ticket> tickets = ticketService.findAll();
@@ -58,7 +58,7 @@ public class StatisticView extends VerticalLayout {
         }
 
         //HEADER
-        H1 h1 = new H1("Statistics");
+        H1 h1 = new H1("Trending");
         h1.setHeight("50px");
 
         //LAYOUT

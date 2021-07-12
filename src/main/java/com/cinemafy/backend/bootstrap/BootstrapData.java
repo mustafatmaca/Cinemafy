@@ -260,21 +260,21 @@ public class BootstrapData implements CommandLineRunner {
 
         Session session = new Session();
         session.setStartTime(LocalTime.of(9,0));
-        session.setEndTime(session.getStartTime().plus(Duration.ofMinutes(dune.getMinute())).truncatedTo(ChronoUnit.HOURS));
+        session.setEndTime(session.getStartTime().plus(Duration.ofMinutes(dune.getMinute()+60)).truncatedTo(ChronoUnit.HOURS));
         session.setFilm(dune);
         session.setSalon(salon1);
         sessionService.save(session);
 
         Session session1 = new Session();
         session1.setStartTime(session.getEndTime());
-        session1.setEndTime(session1.getStartTime().plus(Duration.ofMinutes(interstellar.getMinute())).truncatedTo(ChronoUnit.HOURS));
+        session1.setEndTime(session1.getStartTime().plus(Duration.ofMinutes(interstellar.getMinute()+60)).truncatedTo(ChronoUnit.HOURS));
         session1.setFilm(interstellar);
         session1.setSalon(salon1);
         sessionService.save(session1);
 
         Session session2 = new Session();
         session2.setStartTime(LocalTime.of(9,0));
-        session2.setEndTime(session2.getStartTime().plus(Duration.ofMinutes(eternals.getMinute())).truncatedTo(ChronoUnit.HOURS));
+        session2.setEndTime(session2.getStartTime().plus(Duration.ofMinutes(eternals.getMinute()+60)).truncatedTo(ChronoUnit.HOURS));
         session2.setFilm(eternals);
         session2.setSalon(sln1);
         sessionService.save(session2);

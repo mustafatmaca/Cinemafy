@@ -10,6 +10,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.timepicker.TimePicker;
@@ -17,6 +18,9 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Route(value = "session", layout = AdminView.class)
@@ -28,7 +32,7 @@ public class SessionView extends VerticalLayout {
     private final FilmService filmService;
     private final TicketService ticketService;
     private Grid<Session> sessionGrid = new Grid<>(Session.class);;
-    Dialog dialogUpdateSession = new Dialog();
+    Dialog dialogSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
     Long itemId = 0L;
 
@@ -40,7 +44,7 @@ public class SessionView extends VerticalLayout {
         this.ticketService = ticketService;
         H1 session = new H1("Session");
 
-        configureSessionDialog(dialogUpdateSession);
+        configureSessionDialog(dialogSession);
 
         configureGrid();
         updateList();
@@ -49,7 +53,7 @@ public class SessionView extends VerticalLayout {
         btnNewSession.addClickListener(buttonClickEvent -> {
             itemId = 0L;
             sessionBinder.readBean(new Session());
-            dialogUpdateSession.open();
+            dialogSession.open();
         });
 
         add(session, btnNewSession, sessionGrid);
@@ -61,8 +65,8 @@ public class SessionView extends VerticalLayout {
         ComboBox<Film> cbFilm = new ComboBox("Film");
         ComboBox<Salon> cbSalon = new ComboBox("Salon");
         ComboBox<Cinema> cbCinema = new ComboBox("Cinema");
-        TimePicker tpStart = new TimePicker("Start Time");
-        TimePicker tpEnd = new TimePicker("End Time");tpEnd.isReadOnly();
+        TimePicker tpStart = new TimePicker("Start Time");tpStart.setMinTime(LocalTime.parse("09:00"));
+        TimePicker tpEnd = new TimePicker("End Time");tpEnd.isReadOnly();tpEnd.setMaxTime(LocalTime.parse("23:00"));
 
         List<Film> films = filmService.findAll();
         List<Cinema> cinemas = cinemaService.findAll();
@@ -77,7 +81,7 @@ public class SessionView extends VerticalLayout {
         sessionBinder.bind(tpStart,Session::getStartTime,Session::setStartTime);
         sessionBinder.bind(tpEnd,Session::getEndTime,Session::setEndTime);
 
-        if (cbSalon.getValue() != null){
+        if (itemId != 0L){
             cbCinema.setValue(cbSalon.getValue().getCinema());
         }
 
@@ -86,6 +90,13 @@ public class SessionView extends VerticalLayout {
             List<Salon> salonNumber = salonService.findByCinema(e.getValue());
             cbSalon.setItems(salonNumber);
             cbSalon.setItemLabelGenerator(salon -> salon.getNumber());
+        });
+
+        cbFilm.addValueChangeListener(e -> {
+            Film film = e.getValue();
+            tpStart.addValueChangeListener(event -> {
+                tpEnd.setValue(event.getValue().plus(Duration.ofMinutes(film.getMinute()+60)).truncatedTo(ChronoUnit.HOURS));
+            });
         });
 
         FormLayout formLayout = new FormLayout();
@@ -108,6 +119,18 @@ public class SessionView extends VerticalLayout {
                 sessionBinder.writeBean(session);
             } catch (ValidationException e) {
                 e.printStackTrace();
+            }
+
+            List<Session> sessions = sessionService.findBySalon(session.getSalon());
+
+            for (Session s:sessions) {
+                if (itemId != s.getId()){
+                    if ( session.getStartTime().isBefore(s.getEndTime()) && session.getStartTime().isAfter(s.getStartTime()) || session.getEndTime().isBefore(s.getEndTime()) && session.getEndTime().isAfter(s.getStartTime())){
+                        Notification.show("Another session in this time");
+                        tpStart.setValue(null);
+                        break;
+                    }
+                }
             }
 
             session.setId(itemId);
@@ -155,7 +178,7 @@ public class SessionView extends VerticalLayout {
         btnUpdate.addClickListener(buttonClickEvent -> {
             itemId = item.getId();
             sessionBinder.readBean(item);
-            dialogUpdateSession.open();
+            dialogSession.open();
         });
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(btnUpdate, btnDelete);

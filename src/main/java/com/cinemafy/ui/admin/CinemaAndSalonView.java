@@ -42,6 +42,7 @@ public class CinemaAndSalonView extends VerticalLayout {
     Dialog dialogSalon = new Dialog();
     Binder<Cinema> cinemaBinder = new Binder<>();
     Binder<Salon> salonBinder = new Binder<>();
+    ComboBox<Cinema> cbCinema = new ComboBox("Cinema");
     Long itemId = 0L;
 
     public CinemaAndSalonView(CinemaService cinemaService, SalonService salonService, SessionService sessionService, TicketService ticketService) throws FileNotFoundException {
@@ -117,6 +118,7 @@ public class CinemaAndSalonView extends VerticalLayout {
             cinema.setId(itemId);
             cinemaService.save(cinema);
             updateList();
+            updateDialog();
             dialog.close();
         });
 
@@ -130,7 +132,7 @@ public class CinemaAndSalonView extends VerticalLayout {
         Cinema cinema1 = new Cinema();
         TextField tfNumber = new TextField("Number");
         TextField tfSeatCapacity = new TextField("Seat Capacity");
-        ComboBox<Cinema> cbCinema = new ComboBox("Cinema");
+
         List<Cinema> cinemas = cinemaService.findAll();
 
         cbCinema.setItems(cinemas);
@@ -172,6 +174,10 @@ public class CinemaAndSalonView extends VerticalLayout {
         dialog.add(new H3("Salon"),formLayout,horizontalLayout);
     }
 
+    private void updateDialog() {
+        cbCinema.setItems(cinemaService.findAll());
+    }
+
     private void updateList() {
         cinemaGrid.setItems(cinemaService.findAll());
         salonGrid.setItems(salonService.findAll());
@@ -207,6 +213,7 @@ public class CinemaAndSalonView extends VerticalLayout {
                 }
                 cinemaService.delete(item);
                 updateList();
+                updateDialog();
             },
                     "Cancel", cancelEvent -> {
             });

@@ -127,7 +127,7 @@ public class SessionView extends VerticalLayout {
 
             for (Session s:sessions) {
                 if (itemId != s.getId()){
-                    if ( session.getStartTime().isBefore(s.getEndTime()) && session.getStartTime().isAfter(s.getStartTime()) || session.getEndTime().isBefore(s.getEndTime()) && session.getEndTime().isAfter(s.getStartTime())){
+                    if ( session.getStartTime().isBefore(s.getEndTime()) && session.getStartTime().isAfter(s.getStartTime()) || session.getEndTime().isBefore(s.getEndTime()) && session.getEndTime().isAfter(s.getStartTime()) || session.getStartTime().equals(s.getStartTime())){
                         Notification.show("Another session in this time");
                         session = null;
                         break;
@@ -218,7 +218,7 @@ public class SessionView extends VerticalLayout {
 
             for (Session s:sessions) {
                 if (itemId != s.getId()){
-                    if ( session.getStartTime().isBefore(s.getEndTime()) && session.getStartTime().isAfter(s.getStartTime()) || session.getEndTime().isBefore(s.getEndTime()) && session.getEndTime().isAfter(s.getStartTime())){
+                    if ( session.getStartTime().isBefore(s.getEndTime()) && session.getStartTime().isAfter(s.getStartTime()) || session.getEndTime().isBefore(s.getEndTime()) && session.getEndTime().isAfter(s.getStartTime()) || session.getStartTime().equals(s.getStartTime())){
                         Notification.show("Another session in this time");
                         session = null;
                         break;

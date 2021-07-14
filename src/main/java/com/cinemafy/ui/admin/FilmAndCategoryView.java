@@ -41,6 +41,7 @@ public class FilmAndCategoryView extends VerticalLayout {
     Dialog dialogCategory = new Dialog();
     Binder<Film> filmBinder = new Binder<>();
     Binder<Category> categoryBinder = new Binder<>();
+    ComboBox<Category> cbCategory = new ComboBox("Category");
     Long itemId = 0L;
 
     public FilmAndCategoryView(FilmService filmService, CategoryService categoryService, SessionService sessionService, TicketService ticketService) {
@@ -79,7 +80,6 @@ public class FilmAndCategoryView extends VerticalLayout {
         TextField tfName = new TextField("Name");
         TextField tfMinute = new TextField("Minute(ex. '120')");
         TextField tfSrc = new TextField("Image Link");
-        ComboBox<Category> cbCategory = new ComboBox("Category");
         List<Category> categories = categoryService.findAll();
 
         cbCategory.setItems(categories);
@@ -152,12 +152,17 @@ public class FilmAndCategoryView extends VerticalLayout {
             category.setId(itemId);
             categoryService.save(category);
             updateList();
+            updateDialog();
             dialog.close();
         });
 
 
         horizontalLayout.add(btnCancel,btnSave);
         dialog.add(new H3("Category"),formLayout,horizontalLayout);
+    }
+
+    private void updateDialog() {
+        cbCategory.setItems(categoryService.findAll());
     }
 
     private void updateList() {
@@ -236,6 +241,7 @@ public class FilmAndCategoryView extends VerticalLayout {
                 }
                 categoryService.delete(item);
                 updateList();
+                updateDialog();
             },
                     "Cancel", cancelEvent -> {
             });

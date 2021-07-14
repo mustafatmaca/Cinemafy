@@ -9,11 +9,13 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
@@ -30,6 +32,8 @@ public class TicketView extends VerticalLayout {
     private final SessionService sessionService;
     private final TicketService ticketService;
     private Grid<Ticket> ticketGrid = new Grid<>(Ticket.class);
+    FormLayout ticketForm = new FormLayout();
+    Binder<Ticket> ticketBinder = new Binder<>();
     Film ticketFilm;
     User user;
 
@@ -54,6 +58,8 @@ public class TicketView extends VerticalLayout {
         if (VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId") != null){
             user = userService.findUser(Long.valueOf(VaadinSession.getCurrent().getSession().getAttribute("LoggedInUserId").toString())).get();
         }
+
+        configureForm(ticketForm, user);
 
         //COMBOBOX
         List<Film> films = filmService.findAll();
@@ -133,13 +139,62 @@ public class TicketView extends VerticalLayout {
         VerticalLayout title1 = new VerticalLayout(h2);
         title1.setAlignItems(Alignment.START);
 
-        VerticalLayout verticalLayout = new VerticalLayout(new HorizontalLayout(cbFilm,cbCinema), new HorizontalLayout(cbSalon, cbSession), new HorizontalLayout(valueDatePicker));
-        verticalLayout.setAlignItems(Alignment.CENTER);
+        add(title, ticketForm, title1, ticketGrid);
+    }
 
-        VerticalLayout button = new VerticalLayout(btBuy);
-        button.setAlignItems(Alignment.CENTER);
+    private void configureForm(FormLayout ticketForm, User user) {
+        ComboBox<Film> cbFilm = new ComboBox<>("Film");
+        cbFilm.setItemLabelGenerator(Film::getName);
+        ComboBox<Cinema> cbCinema = new ComboBox<>("Cinema");cbCinema.setEnabled(false);
+        cbCinema.setItemLabelGenerator(Cinema::getName);
+        ComboBox<Salon> cbSalon = new ComboBox<>("Salon");cbSalon.setEnabled(false);
+        cbSalon.setItemLabelGenerator(Salon::getNumber);
+        ComboBox<Session> cbSession = new ComboBox<>("Session");cbSession.setEnabled(false);
+        cbSession.setItemLabelGenerator(session -> session.getStartTime().toString());
+        DatePicker datePicker = new DatePicker();
+        datePicker.setMin(LocalDate.now());
+        LocalDate now = LocalDate.now();
+        datePicker.setValue(now);
 
-        add(title, verticalLayout, button, title1, ticketGrid);
+        cbFilm.setItems(filmService.findAll());
+        cbFilm.addValueChangeListener(e -> {
+            cbCinema.setEnabled(true);
+            cbCinema.setItems(cinemaService.findAll());
+        });
+        cbCinema.setItems(cinemaService.findAll());
+        cbCinema.addValueChangeListener(cinema -> {
+            cbSalon.setEnabled(true);
+            List<Salon> salonNumber = salonService.findByCinema(cinema.getValue());
+            cbSalon.setItems(salonNumber);
+        });
+        cbSalon.addValueChangeListener(salon -> {
+            cbSession.setEnabled(true);
+            List<Session> sessions =sessionService.findBySalonAndFilm(salon.getValue(), cbFilm.getValue());
+            cbSession.setItems(sessions);
+        });
+
+        ticketBinder.forField(cbSession).bind(Ticket::getSession, Ticket::setSession);
+        ticketBinder.forField(datePicker).bind(Ticket::getDate, Ticket::setDate);
+
+
+        Button btnBuy = new Button("Buy a Ticket");
+        btnBuy.setWidth("200px");
+        btnBuy.addClickListener(e -> {
+            Ticket ticket = new Ticket();
+
+            try {
+                ticketBinder.writeBean(ticket);
+            } catch (ValidationException validationException) {
+                validationException.printStackTrace();
+            }
+
+            ticket.setUser(user);
+            ticketService.save(ticket);
+            updateList(user);
+        });
+
+        ticketForm.add(cbFilm,cbCinema,cbSalon,cbSession, datePicker, btnBuy);
+
     }
 
     private void updateList(User user) {

@@ -8,7 +8,9 @@ import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.repositories.SalonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,6 +33,13 @@ public class SalonServiceImpl implements SalonService{
     @Override
     public List<Salon> findByCinema(Cinema cinema) {
         return salonRepository.findByCinema_Id(cinema.getId());
+    }
+
+    @Override
+    public Set<Salon> findByCinemaFilter(String filter) {
+        Set<Salon> salonSet = new HashSet<>();
+        salonRepository.findByCinema_NameContainingIgnoreCase(filter).iterator().forEachRemaining(salonSet::add);
+        return salonSet;
     }
 
     @Override

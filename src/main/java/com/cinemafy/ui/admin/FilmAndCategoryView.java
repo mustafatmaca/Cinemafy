@@ -17,6 +17,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -37,6 +38,9 @@ public class FilmAndCategoryView extends VerticalLayout {
     private final TicketService ticketService;
     private Grid<Film> filmGrid = new Grid<>(Film.class);
     private Grid<Category> categoryGrid = new Grid<>(Category.class);
+    TextField tfNameFilter = new TextField();
+    TextField tfCategoryFilter = new TextField();
+    TextField tfGenreFilter = new TextField();
     Dialog dialogFilm = new Dialog();
     Dialog dialogCategory = new Dialog();
     Binder<Film> filmBinder = new Binder<>();
@@ -58,6 +62,31 @@ public class FilmAndCategoryView extends VerticalLayout {
         configureGrid();
         updateList();
 
+        //FILTER
+        tfNameFilter.setPlaceholder("Name");
+        tfCategoryFilter.setPlaceholder("Category");
+        Button btnNameFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnNameFilter.addClickListener(event -> {
+            updateByNameFilter(tfNameFilter.getValue());
+        });
+        Button btnCategoryFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnCategoryFilter.addClickListener(event -> {
+            updateByCategoryFilter(tfCategoryFilter.getValue());
+        });
+
+        HorizontalLayout filmFilter = new HorizontalLayout();
+        filmFilter.add(tfNameFilter,btnNameFilter,tfCategoryFilter,btnCategoryFilter);
+
+        tfGenreFilter.setPlaceholder("Genre");
+        Button btnGenreFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnGenreFilter.addClickListener(event -> {
+            updateByGenreFilter(tfGenreFilter.getValue());
+        });
+
+        HorizontalLayout categoryFilter = new HorizontalLayout();
+        categoryFilter.add(tfGenreFilter,btnGenreFilter);
+
+        //NEW
         Button btnNewFilm = new Button("New Film");
         btnNewFilm.addClickListener(buttonClickEvent -> {
             itemId = 0L;
@@ -72,8 +101,9 @@ public class FilmAndCategoryView extends VerticalLayout {
             dialogCategory.open();
         });
 
-        add(film, btnNewFilm, filmGrid, category, btnNewCategory, categoryGrid);
+        add(film, btnNewFilm, filmFilter, filmGrid, category, btnNewCategory, categoryFilter, categoryGrid);
     }
+
 
     private void configureFilmDialog(Dialog dialog) {
         dialog.setModal(true);
@@ -168,6 +198,19 @@ public class FilmAndCategoryView extends VerticalLayout {
     private void updateList() {
         filmGrid.setItems(filmService.findAll());
         categoryGrid.setItems(categoryService.findAll());
+    }
+
+
+    private void updateByNameFilter(String name) {
+        filmGrid.setItems(filmService.findByNameFilter(name));
+    }
+
+    private void updateByCategoryFilter(String category) {
+        filmGrid.setItems(filmService.findByCategoryFilter(category));
+    }
+
+    private void updateByGenreFilter(String genre) {
+        categoryGrid.setItems(categoryService.findByGenreFilter(genre));
     }
 
     private void configureGrid() {

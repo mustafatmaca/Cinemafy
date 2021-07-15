@@ -9,7 +9,9 @@ import com.cinemafy.backend.models.Session;
 import com.cinemafy.backend.repositories.SessionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -42,6 +44,20 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public List<Session> findBySalonAndFilm(Salon salon, Film film) {
         return sessionRepository.findBySalon_IdAndFilm_Id(salon.getId(), film.getId());
+    }
+
+    @Override
+    public Set<Session> findByFilmFilter(String filter) {
+        Set<Session> sessionSet = new HashSet<>();
+        sessionRepository.findByFilm_NameContainingIgnoreCase(filter).iterator().forEachRemaining(sessionSet::add);
+        return sessionSet;
+    }
+
+    @Override
+    public Set<Session> findByCinemaFilter(String filter) {
+        Set<Session> sessionSet = new HashSet<>();
+        sessionRepository.findBySalon_Cinema_NameContainingIgnoreCase(filter).iterator().forEachRemaining(sessionSet::add);
+        return sessionSet;
     }
 
     @Override

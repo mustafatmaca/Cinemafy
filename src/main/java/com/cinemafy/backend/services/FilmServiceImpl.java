@@ -8,7 +8,9 @@ import com.cinemafy.backend.models.Film;
 import com.cinemafy.backend.repositories.FilmRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,6 +43,20 @@ public class FilmServiceImpl implements FilmService{
         }
 
         return result.get(0);
+    }
+
+    @Override
+    public Set<Film> findByNameFilter(String filter) {
+        Set<Film> filmSet = new HashSet<>();
+        filmRepository.findByNameContainingIgnoreCase(filter).iterator().forEachRemaining(filmSet::add);
+        return filmSet;
+    }
+
+    @Override
+    public Set<Film> findByCategoryFilter(String filter) {
+        Set<Film> filmSet = new HashSet<>();
+        filmRepository.findByCategory_GenreContainingIgnoreCase(filter).iterator().forEachRemaining(filmSet::add);
+        return filmSet;
     }
 
     @Override

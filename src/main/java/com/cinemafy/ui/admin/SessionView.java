@@ -10,9 +10,11 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ReadOnlyHasValue;
@@ -33,6 +35,8 @@ public class SessionView extends VerticalLayout {
     private final FilmService filmService;
     private final TicketService ticketService;
     private Grid<Session> sessionGrid = new Grid<>(Session.class);
+    TextField tfFilmFilter = new TextField();
+    TextField tfCinemaFilter = new TextField();
     Dialog dialogSession = new Dialog();
     Dialog dialogNewSession = new Dialog();
     Binder<Session> sessionBinder = new Binder<>();
@@ -53,6 +57,21 @@ public class SessionView extends VerticalLayout {
         configureGrid();
         updateList();
 
+        //FILTER
+        tfFilmFilter.setPlaceholder("Film");
+        tfCinemaFilter.setPlaceholder("Cinema");
+        Button btnFilmFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnFilmFilter.addClickListener(event -> {
+            updateByFilmFilter(tfFilmFilter.getValue());
+        });
+        Button btnCinemaFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnCinemaFilter.addClickListener(event -> {
+            updateByCinemaFilter(tfCinemaFilter.getValue());
+        });
+
+        HorizontalLayout sessionFilter = new HorizontalLayout();
+        sessionFilter.add(tfFilmFilter,btnFilmFilter, tfCinemaFilter,btnCinemaFilter);
+
         Button btnNewSession = new Button("New Session");
         btnNewSession.addClickListener(buttonClickEvent -> {
             itemId = 0L;
@@ -60,7 +79,7 @@ public class SessionView extends VerticalLayout {
             dialogNewSession.open();
         });
 
-        add(session, btnNewSession, sessionGrid);
+        add(session, btnNewSession, sessionFilter, sessionGrid);
 
     }
 
@@ -239,6 +258,14 @@ public class SessionView extends VerticalLayout {
 
     private void updateList() {
         sessionGrid.setItems(sessionService.findAll());
+    }
+
+    private void updateByFilmFilter(String film) {
+        sessionGrid.setItems(sessionService.findByFilmFilter(film));
+    }
+
+    private void updateByCinemaFilter(String cinema) {
+        sessionGrid.setItems(sessionService.findByCinemaFilter(cinema));
     }
 
     private void configureGrid() {

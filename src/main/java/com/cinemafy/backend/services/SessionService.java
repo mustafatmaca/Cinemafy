@@ -8,6 +8,7 @@ import com.cinemafy.backend.models.Salon;
 import com.cinemafy.backend.models.Session;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SessionService {
     List<Session> findAll();
@@ -17,6 +18,10 @@ public interface SessionService {
     List<Session> findBySalon(Salon salon);
 
     List<Session> findBySalonAndFilm(Salon salon, Film film);
+
+    Set<Session> findByFilmFilter(String filter);
+
+    Set<Session> findByCinemaFilter(String filter);
 
     Long count();
 

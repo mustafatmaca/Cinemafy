@@ -13,4 +13,6 @@ public interface SessionRepository extends CrudRepository<Session, Long>, JpaRep
     List<Session> findByFilm_Id(Long id);
     List<Session> findBySalon_Id(Long id);
     List<Session> findBySalon_IdAndFilm_Id(Long idSalon, Long idFilm);
+    List<Session> findByFilm_NameContainingIgnoreCase(String filter);
+    List<Session> findBySalon_Cinema_NameContainingIgnoreCase(String filter);
 }

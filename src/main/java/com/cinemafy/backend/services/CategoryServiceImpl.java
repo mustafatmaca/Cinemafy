@@ -7,7 +7,9 @@ import com.cinemafy.backend.models.Category;
 import com.cinemafy.backend.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,6 +27,13 @@ public class CategoryServiceImpl implements CategoryService{
     public List<Category> findAll() {
         return StreamSupport.stream(categoryRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Category> findByGenreFilter(String filter) {
+        Set<Category> categorySet = new HashSet<>();
+        categoryRepository.findByGenreContainingIgnoreCase(filter).iterator().forEachRemaining(categorySet::add);
+        return categorySet;
     }
 
     @Override

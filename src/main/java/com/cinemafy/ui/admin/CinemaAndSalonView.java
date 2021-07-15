@@ -16,6 +16,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -38,6 +39,9 @@ public class CinemaAndSalonView extends VerticalLayout {
     private final TicketService ticketService;
     private Grid<Cinema> cinemaGrid = new Grid<>(Cinema.class);
     private Grid<Salon> salonGrid = new Grid<>(Salon.class);
+    TextField tfNameFilter = new TextField();
+    TextField tfCityFilter = new TextField();
+    TextField tfCinemaFilter = new TextField();
     Dialog dialogCinema = new Dialog();
     Dialog dialogSalon = new Dialog();
     Binder<Cinema> cinemaBinder = new Binder<>();
@@ -59,6 +63,29 @@ public class CinemaAndSalonView extends VerticalLayout {
         configureGrid();
         updateList();
 
+        tfNameFilter.setPlaceholder("Name");
+        tfCityFilter.setPlaceholder("City");
+        Button btnNameFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnNameFilter.addClickListener(event -> {
+            updateByNameFilter(tfNameFilter.getValue());
+        });
+        Button btnCityFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnCityFilter.addClickListener(event -> {
+            updateByCityFilter(tfCityFilter.getValue());
+        });
+
+        HorizontalLayout cinemaFilter = new HorizontalLayout();
+        cinemaFilter.add(tfNameFilter,btnNameFilter, tfCityFilter,btnCityFilter);
+
+        tfCinemaFilter.setPlaceholder("Cinema");
+        Button btnCinemaFilter = new Button("Search", VaadinIcon.SEARCH.create());
+        btnCinemaFilter.addClickListener(event -> {
+            updateByCinemaFilter(tfCinemaFilter.getValue());
+        });
+
+        HorizontalLayout salonFilter = new HorizontalLayout();
+        salonFilter.add(tfCinemaFilter,btnCinemaFilter);
+
         Button btnNewCinema = new Button("New Cinema");
         btnNewCinema.addClickListener(buttonClickEvent -> {
             itemId = 0L;
@@ -73,7 +100,7 @@ public class CinemaAndSalonView extends VerticalLayout {
             dialogSalon.open();
         });
 
-        add(cinema, btnNewCinema, cinemaGrid, salon, btnNewSalon, salonGrid);
+        add(cinema, btnNewCinema, cinemaFilter, cinemaGrid, salon, btnNewSalon, salonFilter, salonGrid);
     }
 
     private void configureCinemaDialog(Dialog dialog) throws FileNotFoundException {
@@ -181,6 +208,18 @@ public class CinemaAndSalonView extends VerticalLayout {
     private void updateList() {
         cinemaGrid.setItems(cinemaService.findAll());
         salonGrid.setItems(salonService.findAll());
+    }
+
+    private void updateByNameFilter(String name) {
+        cinemaGrid.setItems(cinemaService.findByNameFilter(name));
+    }
+
+    private void updateByCityFilter(String city) {
+        cinemaGrid.setItems(cinemaService.findByCityFilter(city));
+    }
+
+    private void updateByCinemaFilter(String cinema) {
+        salonGrid.setItems(salonService.findByCinemaFilter(cinema));
     }
 
     private void configureGrid() {
